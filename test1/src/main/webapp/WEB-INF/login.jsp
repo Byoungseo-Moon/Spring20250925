@@ -49,7 +49,7 @@
                     } else {
                         // 로그인 실패 시 경고 메시지 출력
                         alert(data.message);
-                    }
+                   }
                 },
                 error: function(xhr, status, error) {
                     // 오류 처리

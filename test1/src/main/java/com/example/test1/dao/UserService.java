@@ -5,20 +5,19 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.test1.controller.StuController;
+import com.example.test1.controller.UserController;
 import com.example.test1.mapper.UserMapper;
 import com.example.test1.model.User;
 
 @Service
-public class UserService {
-
-    private final StuController stuController;
+public class UserService { 
 	
 	@Autowired
 	UserMapper userMapper;
 
-    UserService(StuController stuController) {
-        this.stuController = stuController;
-    }	
+//    UserService(UserController userController) {
+//        this.userController = userController;
+//    }	
 	
 	public HashMap<String, Object> userLogin(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
@@ -29,7 +28,9 @@ public class UserService {
 				System.out.println(user.getName());
 				System.out.println(user.getNickName());				
 			}			
-			
+		
+		resultMap.put("info", user);
+		resultMap.put("result","success");
 		return resultMap;
 	}
 }

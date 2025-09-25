@@ -24,6 +24,7 @@ public class UserController {
 
         return "/login";
     }
+	
 	@RequestMapping(value = "/login.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String login(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -31,7 +32,7 @@ public class UserController {
 		System.out.println(map);
 		resultMap = userService.userLogin(map);
 		
-		return new Gson().toJson(resultMap);
+		return new Gson().toJson(resultMap); // [{},{}]
 	}
 	
 }

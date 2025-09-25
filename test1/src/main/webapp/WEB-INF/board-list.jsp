@@ -35,30 +35,34 @@
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
 
             <div>
-                <input v-model="keyword" placeholder="검색어">
-                <button type="button" @click="fnInfo()">검색</button>
-            </div>
-
-            <div>
                 <table>
                     <tr>
-                        <th>학번</th>
-                        <th>이름</th>
-                        <th>학과</th>
-                        <th>학년</th>
-                        <th>성별</th>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>내용</th>
+                        <th>아이디</th>
+                        <th>조회수</th>
+                        <th>호응수</th>
+                        <th>종류</th>
+                        <th>작성일</th>
+                        <th>갱신일</th>
                     </tr>
 
                     <tr v-for="item in list">
-                        <td>{{item.stuNo}}</td>
-                        <td>{{item.stuName}}</td>
-                        <td>{{item.stuDept}}</td>
-                        <td>{{item.stuGrade}}</td>
-                        <td>{{item.stuGender}}</td>
+                        <td>{{item.boardNo}}</td>
+                        <td>{{item.title}}</td>
+                        <td>{{item.contents}}</td>
+                        <td>{{item.userId}}</td>
+                        <td>{{item.cnt}}</td>
+                        <td>{{item.favorite}}</td>
+                        <td>{{item.kind}}</td>
+                        <td>{{item.cDateTime}}</td>
+                        <td>{{item.uDateTime}}</td>
                     </tr>
 
                 </table>
             </div>
+
 
         </div>
     </body>
@@ -82,7 +86,7 @@
                     let param = {};
 
                     $.ajax({
-                        url: "stu-list.dox",
+                        url: "board-list.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,
