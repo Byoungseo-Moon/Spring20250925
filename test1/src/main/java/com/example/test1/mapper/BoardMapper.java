@@ -6,12 +6,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.test1.model.Board;
-import com.example.test1.model.Student;
-import com.example.test1.model.User;
 
 @Mapper
-public interface BoardMapper {
-	
+public interface BoardMapper {	
 	List<Board> boardList(HashMap<String, Object> map);  // return이 2개 이상이면 list로	
-	
 }
