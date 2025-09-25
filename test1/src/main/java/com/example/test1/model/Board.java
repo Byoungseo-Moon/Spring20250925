@@ -11,14 +11,14 @@ public class Board {
 	private int cnt;
 	private int favorite;
 	private int kind;
-	private String cDateTime;
-	private String uDateTime;
+	private String cDate;
+	private String uDate;
 	
-	public int getBoradNo() {
-		return boradNo;
+	public int getBoardNo() {
+		return boardNo;
 	}
-	public void setBoradNo(int boradNo) {
-		this.boradNo = boradNo;
+	public void setBoardNo(int boardNo) {
+		this.boardNo = boardNo;
 	}
 	public String getTitle() {
 		return title;
@@ -44,11 +44,11 @@ public class Board {
 	public void setCnt(int cnt) {
 		this.cnt = cnt;
 	}
-	public int getFavorate() {
+	public int getFavorite() {
 		return favorite;
 	}
-	public void setFavorate(int favorate) {
-		this.favorite = favorate;
+	public void setFavorite(int favorite) {
+		this.favorite = favorite;
 	}
 	public int getKind() {
 		return kind;
@@ -56,19 +56,18 @@ public class Board {
 	public void setKind(int kind) {
 		this.kind = kind;
 	}
-	public String getcDateTime() {
-		return cDateTime;
+	public String getcDate() {
+		return cDate;
 	}
-	public void setcDateTime(String cDateTime) {
-		this.cDateTime = cDateTime;
+	public void setcDate(String cDate) {
+		this.cDate = cDate;
 	}
-	public String getuDateTime() {
-		return uDateTime;
+	public String getuDate() {
+		return uDate;
 	}
-	public void setuDateTime(String uDateTime) {
-		this.uDateTime = uDateTime;
-	}
-		
+	public void setuDate(String uDate) {
+		this.uDate = uDate;
+	}			
 	
 }		
 	
