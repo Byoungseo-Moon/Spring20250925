@@ -4,8 +4,8 @@
 
 <mapper namespace="com.example.test1.mapper.BoardMapper">
 	<select id="boardList" parameterType="hashmap" resultType="com.example.test1.model.Board">
-		SELECT *
-		FROM TBL_BOARD		
+		SELECT B.*, TO_CHAR(CDATETIME, 'YYYY-MM-DD') CDATE, TO_CHAR(UDATETIME, 'YYYY-MM-DD') UDATE
+		FROM TBL_BOARD B	
 	</select>
 </mapper>
 
