@@ -56,8 +56,8 @@
                         <td>{{item.cnt}}</td>
                         <td>{{item.favorite}}</td>
                         <td>{{item.kind}}</td>
-                        <td>{{item.cDateTime}}</td>
-                        <td>{{item.uDateTime}}</td>
+                        <td>{{item.cDate}}</td>
+                        <td>{{item.uDate}}</td>
                     </tr>
 
                 </table>
