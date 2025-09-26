@@ -104,7 +104,7 @@
                     let param = { keyword: self.keyword };
 
                     $.ajax({
-                        url: "stu-info.dox",
+                        url: "board-info.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,
