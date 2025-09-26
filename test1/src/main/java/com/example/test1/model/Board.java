@@ -4,7 +4,7 @@ package com.example.test1.model;
 //
 //@Data
 public class Board {
-	private int boradNo;
+	private int boardNo;
 	private String title;
 	private String contents;
 	private String userId;
