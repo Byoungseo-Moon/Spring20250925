@@ -9,6 +9,7 @@
         <script src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="/js/page-change.js"></script>
         <style>
             table,
             tr,
@@ -47,14 +48,16 @@
                         <th>학과</th>
                         <th>학년</th>
                         <th>성별</th>
+                        <th>삭제</th>
                     </tr>
 
                     <tr v-for="item in list">
                         <td>{{item.stuNo}}</td>
-                        <td>{{item.stuName}}</td>
+                        <td><a href="javascript:;" @click="fnView(item.stuNo)">{{item.stuName}}</a></td>
                         <td>{{item.stuDept}}</td>
                         <td>{{item.stuGrade}}</td>
                         <td>{{item.stuGender}}</td>
+                        <td><button @click="fnRemove(item.stuNo)">삭제</button></td>
                     </tr>
 
                 </table>
@@ -93,6 +96,23 @@
                     });
                 },
 
+                fnRemove: function (stuNo) {
+
+                    let self = this;
+                    let param = { stuNo: stuNo };
+
+                    $.ajax({
+                        url: "stu-delete.dox",
+                        dataType: "json",
+                        type: "POST",
+                        data: param,
+                        success: function (data) {
+                            alert("삭제되었습니다!");
+                            self.fnList();
+                        }
+                    });
+                },
+
 
                 fnInfo: function () {
 
@@ -108,6 +128,12 @@
 
                         }
                     });
+                },
+
+                fnView: function (stuNo) {
+
+                    pageChange("stu-view.do", { stuNo: stuNo });
+
                 }
 
             }, // methods

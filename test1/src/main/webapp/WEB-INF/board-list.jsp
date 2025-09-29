@@ -9,6 +9,7 @@
         <script src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="/js/page-change.js"></script>
         <style>
             table,
             tr,
@@ -35,32 +36,76 @@
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
 
             <div>
-                <table>
+                <select v-model="kind" @change="fnList">
+                    <option value="">::전체::</option>
+                    <option value="1">::공지사항::</option>
+                    <option value="2">::자유게시판::</option>
+                    <option value="3">::문의게시판::</option>
+                </select>
+
+                <select v-model="order" @change="fnList">
+                    <option value="num">::번호순::</option>
+                    <option value="title">::제목순::</option>
+                    <option value="cnt">::조회수::</option>
+                    <!-- value로 other를 쓰지 말것. 값이 한자일 경우 에러날 수 있음 -->
+                </select>
+
+            </div>
+
+            <div>
+                <table style="float:right">
+                    <tr>
+                        <th>아이디</th>
+                        <td>{{sessionId}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>이름</th>
+                        <td>{{sessionName}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div>
+                <table style="float:right">
                     <tr>
                         <th>번호</th>
                         <th>제목</th>
-                        <th>내용</th>
+                        <!-- <th>내용</th> -->
                         <th>아이디</th>
                         <th>조회수</th>
-                        <th>호응수</th>
-                        <th>종류</th>
+                        <!-- <th>호응수</th>
+                        <th>종류</th> -->
                         <th>작성일</th>
-                        <th>갱신일</th>
+                        <!-- <th>갱신일</th>  -->
+                        <th>삭제</th>
                     </tr>
 
                     <tr v-for="item in list">
                         <td>{{item.boardNo}}</td>
-                        <td>{{item.title}}</td>
-                        <td>{{item.contents}}</td>
+                        <td><a href="javascript:;" @click="fnView(item.boardNo)">{{item.title}}</a></td>
+                        <!-- <td>{{item.contents}}</td> -->
                         <td>{{item.userId}}</td>
                         <td>{{item.cnt}}</td>
-                        <td>{{item.favorite}}</td>
-                        <td>{{item.kind}}</td>
-                        <td>{{item.cDateTime}}</td>
-                        <td>{{item.uDateTime}}</td>
+                        <!-- <td>{{item.favorite}}</td>
+                        <td>{{item.kind}}</td> -->
+                        <td>{{item.cDate}}</td>
+                        <!-- <td>{{item.uDate}}</td>  -->
+                        <td>
+                            <button v-if="sessionId == item.userId || sessionStatus == 'A'"
+                                @click="fnRemove(item.boardNo)">삭제</button>
+                            <button v-else-if @click="fnRemove(item.boardNo)" disabled>삭제</button>
+
+                        </td>
                     </tr>
 
                 </table>
+            </div>
+
+            <div style="float:left">
+
+                <a href="board-add.do"><button>글쓰기</button></a>
+
             </div>
 
 
@@ -75,7 +120,12 @@
                 return {
                     // 변수 - (key : value)
                     keyword: "",
-                    list: []
+                    list: [],
+                    kind: "",
+                    order: "num",
+                    sessionId: "${sessionId}",
+                    sessionStatus: "${sessionStatus}",
+                    sessionName: "${sessionName}"
                 };
             },
             methods: {
@@ -83,7 +133,10 @@
                 fnList: function () {
 
                     let self = this;
-                    let param = {};
+                    let param = {
+                        kind: self.kind,
+                        order: self.order
+                    };
 
                     $.ajax({
                         url: "board-list.dox",
@@ -97,6 +150,24 @@
                     });
                 },
 
+                fnRemove: function (boardNo1) {// item.boardNo값을 boardNo1으로 받음
+
+                    let self = this;
+                    let param = { boardNo: boardNo1 };
+
+                    $.ajax({
+                        url: "board-delete.dox",
+                        dataType: "json",
+                        type: "POST",
+                        data: param,
+                        success: function (data) {
+
+                            alert("삭제되었습니다!");
+                            self.fnList();
+                        }
+                    });
+                },
+
 
                 fnInfo: function () {
 
@@ -104,7 +175,7 @@
                     let param = { keyword: self.keyword };
 
                     $.ajax({
-                        url: "stu-info.dox",
+                        url: "board-info.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,
@@ -112,6 +183,12 @@
 
                         }
                     });
+                },
+
+                fnView: function (boardNo) {
+
+                    pageChange("board-view.do", { boardNo: boardNo });
+
                 }
 
             }, // methods

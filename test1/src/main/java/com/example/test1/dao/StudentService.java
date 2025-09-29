@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.test1.controller.StuController;
 import com.example.test1.mapper.StudentMapper;
 import com.example.test1.mapper.UserMapper;
+import com.example.test1.model.Board;
 import com.example.test1.model.Student;
 import com.example.test1.model.User;
 
@@ -47,4 +48,30 @@ public class StudentService {
 			
 		return resultMap;
 	}
+
+	public HashMap<String, Object> removeStudent(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+				
+		
+		int cnt = studentMapper.deleteStudent(map);	 						
+			
+		resultMap.put("result", "success");
+			
+		return resultMap;
+	}
+	
+	public HashMap<String, Object> getStudent(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		Student student = studentMapper.selectStudent(map);
+						
+		resultMap.put("info", student);	
+		resultMap.put("result", "success");
+			
+		return resultMap;
+	}
+	
+	
+	
 }

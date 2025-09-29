@@ -2,23 +2,23 @@ package com.example.test1.model;
 
 //import lombok.Data;
 //
-//@Data
+//@Data  ---- get set이 필요 없음
 public class Board {
-	private int boradNo;
+	private int boardNo;
 	private String title;
 	private String contents;
 	private String userId;
 	private int cnt;
 	private int favorite;
 	private int kind;
-	private String cDateTime;
-	private String uDateTime;
+	private String cDate;
+	private String uDate;
 	
-	public int getBoradNo() {
-		return boradNo;
+	public int getBoardNo() {
+		return boardNo;
 	}
-	public void setBoradNo(int boradNo) {
-		this.boradNo = boradNo;
+	public void setBoardNo(int boardNo) {
+		this.boardNo = boardNo;
 	}
 	public String getTitle() {
 		return title;
@@ -56,17 +56,17 @@ public class Board {
 	public void setKind(int kind) {
 		this.kind = kind;
 	}
-	public String getcDateTime() {
-		return cDateTime;
+	public String getcDate() {
+		return cDate;
 	}
-	public void setcDateTime(String cDateTime) {
-		this.cDateTime = cDateTime;
+	public void setcDateTime(String cDate) {
+		this.cDate = cDate;
 	}
 	public String getuDateTime() {
-		return uDateTime;
+		return uDate;
 	}
-	public void setuDateTime(String uDateTime) {
-		this.uDateTime = uDateTime;
+	public void setuDateTime(String uDate) {
+		this.uDate = uDate;
 	}
 		
 	
