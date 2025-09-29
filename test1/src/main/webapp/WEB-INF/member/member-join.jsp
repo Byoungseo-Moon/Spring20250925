@@ -47,6 +47,22 @@
                     주소: <input v-model="addr"> <button @click="fnAddr">주소검색</button>
                 </div>
 
+                <div>
+                    문자인증 : <input v-model="inputNum" :placeholder="timer">
+                    <template v-if="!smsFlg">
+                        <button @click="fnSms">인증번호전송</button>
+                    </template>
+
+                    <template v-else>
+                        <button>인증</button>
+                    </template>
+                </div>
+
+                <div>
+                    {{timer}}
+                    <button @click="fnTimer1">시작!</button>
+                </div>
+
             </div>
 
 
@@ -72,7 +88,10 @@
                     // 변수 - (key : value)
                     userId: "",
                     pwd: "",
-                    addr: ""
+                    addr: "",
+                    inputNum: "",
+                    smsFlg: false,
+                    timer: 180
                 };
             },
             methods: {
@@ -108,7 +127,54 @@
                 fnResult: function (roadFullAddr, addrDetail, zipNo) {
                     let self = this;
                     self.addr = roadFullAddr;
+                },
+
+                fnSms: function () {
+                    let self = this;
+                    let param = {       //server에 보내어 요청할 값
+
+                    };
+                    $.ajax({
+                        url: "/send-one",
+                        dataType: "json",
+                        type: "POST",
+                        data: param,
+                        success: function (data) {
+                            console.log(data);
+                            if (data.res.statusCode == "2000") {
+                                alert("문자 전송 완료");
+                                self.smsFlg = true;
+                                self.fnTimer();
+                            } else {
+                                alert("잠시 후 다시 시도해 주세요.");
+                            }
+                        }
+                    });
+
+                },
+
+                fnTimer: function () {
+                    let self = this;
+                    let interval = setInterval(function () {
+                        if (self.timer == 0) {
+                            clearInterval(interval);
+                        } else {
+                            self.timer--;
+                        }
+                    }, 1000);
+                },
+
+                fnTimer1: function () {
+                    let self = this;
+                    let interval = setInterval(() => {   // 화살표 함수
+                        if (self.timer == 0) {
+                            clearInterval(interval);
+                        } else {
+                            self.timer -= 1;
+                        }
+                    }, 1000);
                 }
+
 
 
             }, // methods

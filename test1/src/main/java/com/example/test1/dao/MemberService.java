@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.test1.mapper.MemberMapper;
 import com.example.test1.model.Member;
+import com.example.test1.model.Student;
 
 @Service
 public class MemberService {
@@ -38,6 +39,18 @@ public class MemberService {
 		return resultMap;
 	}
 	
+	public HashMap<String, Object> check(HashMap<String, Object> map){
+		
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();					
+
+		Member member = memberMapper.memberCheck(map);		
+		String result = member != null ? "success" : "fail"; 
+		
+		resultMap.put("result", result);	
+		
+		return resultMap;
+	}
+	
 	public HashMap<String, Object> logout(HashMap<String, Object> map){
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
@@ -48,8 +61,7 @@ public class MemberService {
 			
 		resultMap.put("msg", message);	
 		
-//		session.removeAttribute("sessionId"); // 1개씩 삭제
-		
+//		session.removeAttribute("sessionId"); // 1개씩 삭제		
 		session.invalidate(); // 모든 세션정보 삭제
 		
 		return resultMap;

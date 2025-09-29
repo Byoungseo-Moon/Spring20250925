@@ -54,7 +54,7 @@ public class MemberController {
 	public String check(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();		
 		
-//		resultMap = memberService.check(map);
+		resultMap = memberService.check(map);
 		
 		return new Gson().toJson(resultMap);
 	}
