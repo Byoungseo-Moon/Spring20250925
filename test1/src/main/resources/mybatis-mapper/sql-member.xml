@@ -13,9 +13,15 @@
 	<select id="memberCheck" parameterType="hashmap" resultType="com.example.test1.model.Member">
 		SELECT *
 		FROM TBL_USER
-		WHERE USERID = #{userId}   
-		
+		WHERE USERID = #{userId}   	
 	</select>
+
+	
+	<insert id="memberAdd" parameterType="hashmap">
+		INSERT INTO TBL_USER 
+		VALUES(#{userId}, #{pwd}, #{name}, NULL, NULL, NULL, #{addr}, #{phone},
+		       NULL, #{gender}, #{status}, SYSDATE, SYSDATE)
+	</insert>
 	
 	
 </mapper>

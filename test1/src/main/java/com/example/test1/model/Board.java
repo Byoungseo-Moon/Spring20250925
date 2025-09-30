@@ -14,6 +14,8 @@ public class Board {
 	private String cDate;
 	private String uDate;
 	
+	private String cNum;
+	
 	public int getBoardNo() {
 		return boardNo;
 	}
@@ -59,30 +61,25 @@ public class Board {
 	public String getcDate() {
 		return cDate;
 	}
-<<<<<<< HEAD
-	public void setcDateTime(String cDate) {
-=======
+
 	public void setcDate(String cDate) {
->>>>>>> branch 'main' of https://github.com/Byoungseo-Moon/Spring20250925.git
 		this.cDate = cDate;
 	}
-<<<<<<< HEAD
-	public String getuDateTime() {
-=======
+
 	public String getuDate() {
->>>>>>> branch 'main' of https://github.com/Byoungseo-Moon/Spring20250925.git
 		return uDate;
 	}
-<<<<<<< HEAD
-	public void setuDateTime(String uDate) {
-		this.uDate = uDate;
-	}
-		
-=======
+
 	public void setuDate(String uDate) {
 		this.uDate = uDate;
+	}
+	public String getcNum() {
+		return cNum;
+	}
+	public void setcNum(String cNum) {
+		this.cNum = cNum;
 	}			
->>>>>>> branch 'main' of https://github.com/Byoungseo-Moon/Spring20250925.git
+
 	
 }		
 	

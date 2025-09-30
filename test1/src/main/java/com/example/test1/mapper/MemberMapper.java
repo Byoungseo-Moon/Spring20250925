@@ -15,4 +15,7 @@ public interface MemberMapper {
 	//아이디체크
 	Member memberCheck(HashMap<String, Object> map);
 	
+	//회원 등재
+	int memberAdd(HashMap<String, Object> map);
+	
 }

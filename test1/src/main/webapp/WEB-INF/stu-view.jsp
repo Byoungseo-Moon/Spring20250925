@@ -44,7 +44,7 @@
                     </tr>
                     <tr>
                         <th>시험평균점수</th>
-                        <td>{{info.avgGrade}}</td>
+                        <td>{{info.enrAvg}}</td>
                     </tr>
                 </table>
 
@@ -70,14 +70,13 @@
                     let self = this;
                     let param = { stuNo: self.stuNo };
                     $.ajax({
-                        url: "stu-view.dox",
+                        url: "/stu-view.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,
                         success: function (data) {
                             console.log(data);
                             self.info = data.info;
-
                         }
                     });
                 }

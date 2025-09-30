@@ -67,7 +67,7 @@ public class StudentService {
 		Student student = studentMapper.selectStudent(map);
 						
 		resultMap.put("info", student);	
-		resultMap.put("result", "success");
+//		resultMap.put("result", "success");
 			
 		return resultMap;
 	}

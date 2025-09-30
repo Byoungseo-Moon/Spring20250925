@@ -3,6 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.test1.mapper.StudentMapper">
+
 	<select id="studentInfo" parameterType="hashmap" resultType="com.example.test1.model.Student">
 		SELECT *
 		FROM STUDENT
@@ -20,13 +21,17 @@
 	</delete>	
 	
 	<select id="selectStudent" parameterType="hashmap" resultType="com.example.test1.model.Student" >
-		SELECT S.STU_NO, S.STU_NAME, S.STU_DEPT, AVG_GRADE
+		SELECT 
+	    S.STU_NO, S.STU_NAME, S.STU_DEPT, NVL(AVG(ENR_GRADE), 0) AS ENR_AVG,
+	    (SELECT ROUND(AVG(ENR_GRADE), 1) FROM ENROL) AS TOTAL_AVG,
+	    TOTAL_AVG2
 		FROM STUDENT S
-		INNER JOIN(
-			SELECT STU_NO, AVG(ENR_GRADE) AS AVG_GRADE
-			FROM ENROL
-			GROUP BY STU_NO
-		)T ON S.STU_NO = T.STU_NO		
+		LEFT JOIN ENROL E ON S.STU_NO = E.STU_NO
+		INNER JOIN (
+		    SELECT ROUND(AVG(ENR_GRADE), 1) AS TOTAL_AVG2 FROM ENROL
+		) T ON 1=1
+		WHERE STU_NO = #{stuNo}
+		GROUP BY S.STU_NO, S.STU_NAME, S.STU_DEPT, TOTAL_AVG2	
 		
 	</select>
 	

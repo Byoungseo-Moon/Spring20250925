@@ -35,6 +35,17 @@
         <div id="app">
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
 
+
+            <div>
+                <select v-model="searchOption">
+                    <option value="all">::전체::</option>
+                    <option value="title">::제목::</option>
+                    <option value="id">::작성자::</option>
+                </select>
+                <input v-model="keyword">
+                <button @click="fnList">검색</button>
+            </div>
+
             <div>
                 <select v-model="kind" @change="fnList">
                     <option value="">::전체::</option>
@@ -52,8 +63,8 @@
 
             </div>
 
-            <div>
-                <table style="float:right">
+            <div style="float:right">
+                <table>
                     <tr>
                         <th>아이디</th>
                         <td>{{sessionId}}</td>
@@ -66,44 +77,41 @@
                 </table>
             </div>
 
-            <div>
-                <table style="float:right">
+            <div style="float:left">
+                <table>
                     <tr>
                         <th>번호</th>
                         <th>제목</th>
-                        <!-- <th>내용</th> -->
+                        <th>내용</th>
                         <th>아이디</th>
                         <th>조회수</th>
-                        <!-- <th>호응수</th>
-                        <th>종류</th> -->
+                        <th>호응수</th>
+                        <th>종류</th>
                         <th>작성일</th>
-                        <!-- <th>갱신일</th>  -->
+                        <th>갱신일</th>
                         <th>삭제</th>
                     </tr>
 
                     <tr v-for="item in list">
                         <td>{{item.boardNo}}</td>
-                        <td><a href="javascript:;" @click="fnView(item.boardNo)">{{item.title}}</a></td>
-                        <!-- <td>{{item.contents}}</td> -->
+                        <td><a href="javascript:;" @click="fnView(item.boardNo)">{{item.title}}</a>
+                            <span v-if="item.cNum != 0" style="color:red"> [{{item.cNum}}]</span>
+                        </td>
+                        <td>{{item.contents}}</td>
                         <td>{{item.userId}}</td>
                         <td>{{item.cnt}}</td>
-<<<<<<< HEAD
-                        <!-- <td>{{item.favorite}}</td>
-                        <td>{{item.kind}}</td> -->
+
+                        <td>{{item.favorite}}</td>
+                        <td>{{item.kind}}</td>
                         <td>{{item.cDate}}</td>
-                        <!-- <td>{{item.uDate}}</td>  -->
+                        <td>{{item.uDate}}</td>
                         <td>
                             <button v-if="sessionId == item.userId || sessionStatus == 'A'"
                                 @click="fnRemove(item.boardNo)">삭제</button>
                             <button v-else-if @click="fnRemove(item.boardNo)" disabled>삭제</button>
 
                         </td>
-=======
-                        <td>{{item.favorite}}</td>
-                        <td>{{item.kind}}</td>
-                        <td>{{item.cDate}}</td>
-                        <td>{{item.uDate}}</td>
->>>>>>> branch 'main' of https://github.com/Byoungseo-Moon/Spring20250925.git
+
                     </tr>
 
                 </table>
@@ -132,7 +140,9 @@
                     order: "num",
                     sessionId: "${sessionId}",
                     sessionStatus: "${sessionStatus}",
-                    sessionName: "${sessionName}"
+                    sessionName: "${sessionName}",
+                    cNum: 0,
+                    searchOption: "all" //검색옵션 : 기본 all
                 };
             },
             methods: {
@@ -142,7 +152,9 @@
                     let self = this;
                     let param = {
                         kind: self.kind,
-                        order: self.order
+                        order: self.order,
+                        keyword: self.keyword,
+                        searchOption: self.searchOption
                     };
 
                     $.ajax({
@@ -174,7 +186,6 @@
                         }
                     });
                 },
-
 
                 fnInfo: function () {
 

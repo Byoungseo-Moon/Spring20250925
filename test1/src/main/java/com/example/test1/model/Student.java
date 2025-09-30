@@ -9,8 +9,9 @@ public class Student {
 	private String stuDept;
 	private String stuGrade;
 	private String stuGender;
-	private int enrGrade;
-	private int avgGrade;
+	
+	private int enrAvg;
+	private int totalAvg;
 	
 	
 	public String getStuNo() {
@@ -43,17 +44,18 @@ public class Student {
 	public void setStuGender(String stuGender) {
 		this.stuGender = stuGender;
 	}
-	public int getEnrGrade() {
-		return enrGrade;
+	
+	public int getEnrAvg() {
+		return enrAvg;
 	}
-	public void setEnrGrade(int enrGrade) {
-		this.enrGrade = enrGrade;
+	public void setEnrAvg(int enrAvg) {
+		this.enrAvg = enrAvg;
 	}
-	public int getAvgGrade() {
-		return avgGrade;
+	public int getTotalAvg() {
+		return totalAvg;
 	}
-	public void setAvgGrade(int avgGrade) {
-		this.avgGrade = avgGrade;
+	public void setTotalAvg(int totalAvg) {
+		this.totalAvg = totalAvg;
 	}
 
 	

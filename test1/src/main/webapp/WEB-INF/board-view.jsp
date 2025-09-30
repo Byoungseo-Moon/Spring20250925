@@ -10,10 +10,10 @@
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
         <style>
-            table,
-            tr,
-            td,
-            th {
+            #board table,
+            #board tr,
+            #board td,
+            #board th {
                 border: 1px solid black;
                 border-collapse: collapse;
                 padding: 5px 10px;
@@ -33,7 +33,7 @@
         <div id="app">
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
             <div>
-                <table>
+                <table id="board">
                     <tr>
                         <th>제목</th>
                         <td>{{info.title}}</td>
@@ -47,8 +47,34 @@
                         <td>{{info.contents}}</td>
                     </tr>
                 </table>
+            </div>
+
+            <hr>
+            <div style="margin-top: 30px; color:blue;font-size: 20px; font-weight: bold;">댓글목록</div>
+            <div>
+                <table id="comment">
+                    <tr>
+                        <th>닉네임</th>
+                        <th>작성내용</th>
+                        <th>편집</th>
+
+                    </tr>
+                    <tr v-for="item in commentList">
+                        <td>{{item.nickName}}</td>
+                        <td>{{item.contents}}</td>
+                        <td><button>삭제</button></td>
+                        <td><button>수정</button></td>
+                    </tr>
+                </table>
+
+                <table id="input">
+                    <th>댓글입력</th>
+                    <td><textarea cols="40" rows="5"></textarea></td>
+                    <td><button>입력</button></td>
+                </table>
 
             </div>
+
         </div>
     </body>
 
@@ -60,7 +86,8 @@
                 return {
                     // 변수 - (key : value)
                     boardNo: "${boardNo}",   // request.getAttribute(test)를 단순히 함
-                    info: {}
+                    info: {},
+                    commentList: []
                 };
             },
 
@@ -77,6 +104,7 @@
                         success: function (data) {
                             console.log(data);
                             self.info = data.info;
+                            self.commentList = data.commentList;
 
                         }
                     });

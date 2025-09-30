@@ -7,15 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.test1.mapper.BoardMapper;
-<<<<<<< HEAD
 
-=======
->>>>>>> branch 'main' of https://github.com/Byoungseo-Moon/Spring20250925.git
 import com.example.test1.model.Board;
-<<<<<<< HEAD
+import com.example.test1.model.Comment;
 
-=======
->>>>>>> branch 'main' of https://github.com/Byoungseo-Moon/Spring20250925.git
 
 @Service
 public class BoardService {
@@ -60,12 +55,15 @@ public class BoardService {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		Board board = boardMapper.selectBoard(map);
+		List<Comment> commentList = boardMapper.selectCommentList(map); 
 						
 		resultMap.put("info", board);	
+		resultMap.put("commentList", commentList);
 		resultMap.put("result", "success");
 			
 		return resultMap;
 	}
+	
 	
 	
 }

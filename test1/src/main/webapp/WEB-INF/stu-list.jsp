@@ -113,7 +113,6 @@
                     });
                 },
 
-
                 fnInfo: function () {
 
                     let self = this;
@@ -132,7 +131,7 @@
 
                 fnView: function (stuNo) {
 
-                    pageChange("stu-view.do", { stuNo: stuNo });
+                    pageChange("/stu-view.do", { stuNo: stuNo });  // 동일할 경우 하나로 가능함 {stuNo}
 
                 }
 
