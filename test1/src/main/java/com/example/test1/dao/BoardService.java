@@ -7,9 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.test1.mapper.BoardMapper;
+<<<<<<< HEAD
 
+=======
+>>>>>>> branch 'main' of https://github.com/Byoungseo-Moon/Spring20250925.git
 import com.example.test1.model.Board;
+<<<<<<< HEAD
 
+=======
+>>>>>>> branch 'main' of https://github.com/Byoungseo-Moon/Spring20250925.git
 
 @Service
 public class BoardService {

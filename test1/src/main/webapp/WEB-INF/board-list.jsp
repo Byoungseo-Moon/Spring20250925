@@ -87,6 +87,7 @@
                         <!-- <td>{{item.contents}}</td> -->
                         <td>{{item.userId}}</td>
                         <td>{{item.cnt}}</td>
+<<<<<<< HEAD
                         <!-- <td>{{item.favorite}}</td>
                         <td>{{item.kind}}</td> -->
                         <td>{{item.cDate}}</td>
@@ -97,6 +98,12 @@
                             <button v-else-if @click="fnRemove(item.boardNo)" disabled>삭제</button>
 
                         </td>
+=======
+                        <td>{{item.favorite}}</td>
+                        <td>{{item.kind}}</td>
+                        <td>{{item.cDate}}</td>
+                        <td>{{item.uDate}}</td>
+>>>>>>> branch 'main' of https://github.com/Byoungseo-Moon/Spring20250925.git
                     </tr>
 
                 </table>

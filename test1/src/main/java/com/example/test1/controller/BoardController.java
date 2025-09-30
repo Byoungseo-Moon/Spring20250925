@@ -23,6 +23,7 @@ public class BoardController {
 	
 	@RequestMapping("/board-list.do") 
     public String list(Model model) throws Exception{
+<<<<<<< HEAD
 
         return "/board-list"; // .jsp가 생략(properties에서 정의)
     }
@@ -43,6 +44,12 @@ public class BoardController {
     } 
 	
 	
+=======
+		
+        return "/board-list";
+    }	
+
+>>>>>>> branch 'main' of https://github.com/Byoungseo-Moon/Spring20250925.git
 	@RequestMapping(value = "/board-list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String boardlist(Model model, @RequestParam HashMap<String, Object> map) throws Exception {

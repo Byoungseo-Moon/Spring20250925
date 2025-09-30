@@ -44,11 +44,11 @@ public class Board {
 	public void setCnt(int cnt) {
 		this.cnt = cnt;
 	}
-	public int getFavorate() {
+	public int getFavorite() {
 		return favorite;
 	}
-	public void setFavorate(int favorate) {
-		this.favorite = favorate;
+	public void setFavorite(int favorite) {
+		this.favorite = favorite;
 	}
 	public int getKind() {
 		return kind;
@@ -59,16 +59,30 @@ public class Board {
 	public String getcDate() {
 		return cDate;
 	}
+<<<<<<< HEAD
 	public void setcDateTime(String cDate) {
+=======
+	public void setcDate(String cDate) {
+>>>>>>> branch 'main' of https://github.com/Byoungseo-Moon/Spring20250925.git
 		this.cDate = cDate;
 	}
+<<<<<<< HEAD
 	public String getuDateTime() {
+=======
+	public String getuDate() {
+>>>>>>> branch 'main' of https://github.com/Byoungseo-Moon/Spring20250925.git
 		return uDate;
 	}
+<<<<<<< HEAD
 	public void setuDateTime(String uDate) {
 		this.uDate = uDate;
 	}
 		
+=======
+	public void setuDate(String uDate) {
+		this.uDate = uDate;
+	}			
+>>>>>>> branch 'main' of https://github.com/Byoungseo-Moon/Spring20250925.git
 	
 }		
 	

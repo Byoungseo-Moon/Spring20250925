@@ -4,6 +4,7 @@
 
 <mapper namespace="com.example.test1.mapper.BoardMapper">
 	<select id="boardList" parameterType="hashmap" resultType="com.example.test1.model.Board">
+<<<<<<< HEAD
 		SELECT B.*, TO_CHAR(CDATETIME, 'YYYY-MM-DD') CDATE, TO_CHAR(UDATETIME, 'YYYY-MM-DD') UDATE 
 		FROM TBL_BOARD B		
 		WHERE 1=1 
@@ -23,6 +24,10 @@
 		    ORDER BY CNT DESC
 		</if>		
 		
+=======
+		SELECT B.*, TO_CHAR(CDATETIME, 'YYYY-MM-DD') CDATE, TO_CHAR(UDATETIME, 'YYYY-MM-DD') UDATE
+		FROM TBL_BOARD B	
+>>>>>>> branch 'main' of https://github.com/Byoungseo-Moon/Spring20250925.git
 	</select>
 	
 	
