@@ -19,12 +19,24 @@
                 padding: 5px 10px;
             }
 
+            #comment table,
+            #comment tr,
+            #comment td,
+            #comment th {
+                border: 1px solid black;
+                border-collapse: collapse;
+                padding: 5px 10px;
+            }
+
             th {
                 background-color: beige;
             }
 
             input {
                 width: 350px;
+                border: 1px solid black;
+                border-collapse: collapse;
+                padding: 5px 10px;
             }
         </style>
     </head>
@@ -43,6 +55,10 @@
                         <td>{{info.userId}}</td>
                     </tr>
                     <tr>
+                        <th>조회수</th>
+                        <td>{{info.cnt}}</td>
+                    </tr>
+                    <tr>
                         <th>내용</th>
                         <td>{{info.contents}}</td>
                     </tr>
@@ -53,12 +69,12 @@
             <div style="margin-top: 30px; color:blue;font-size: 20px; font-weight: bold;">댓글목록</div>
             <div>
                 <table id="comment">
-                    <tr>
+                    <!-- <tr>
                         <th>닉네임</th>
                         <th>작성내용</th>
                         <th>편집</th>
 
-                    </tr>
+                    </tr> -->
                     <tr v-for="item in commentList">
                         <td>{{item.nickName}}</td>
                         <td>{{item.contents}}</td>
@@ -69,8 +85,8 @@
 
                 <table id="input">
                     <th>댓글입력</th>
-                    <td><textarea cols="40" rows="5"></textarea></td>
-                    <td><button>입력</button></td>
+                    <td><textarea v-model="contents" cols="40" rows="5"></textarea></td>
+                    <td><button @click="fnCommentAdd">입력저장</button></td>
                 </table>
 
             </div>
@@ -87,7 +103,10 @@
                     // 변수 - (key : value)
                     boardNo: "${boardNo}",   // request.getAttribute(test)를 단순히 함
                     info: {},
-                    commentList: []
+                    commentList: [],
+                    sessionId: "${ sessionId }",
+                    contents: "",
+                    cnt: "${cnt}"
                 };
             },
 
@@ -103,12 +122,36 @@
                         data: param,
                         success: function (data) {
                             console.log(data);
+
                             self.info = data.info;
                             self.commentList = data.commentList;
+                        }
+                    });
+                },
 
+                fnCommentAdd: function () {
+                    let self = this;
+                    let param = {
+                        contents: self.contents,
+                        id: self.sessionId,
+                        boardNo: self.boardNo
+                    };
+                    $.ajax({
+                        url: "/comment/add.dox",
+                        dataType: "json",
+                        type: "POST",
+                        data: param,
+                        success: function (data) {
+                            alert(data.msg);
+                            self.contents = "";
+                            self.fnBoardInfo();
                         }
                     });
                 }
+
+
+
+
             }, // methods
             mounted() {
                 // 처음 시작할 때 실행되는 부분

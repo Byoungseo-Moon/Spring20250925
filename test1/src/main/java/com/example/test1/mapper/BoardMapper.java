@@ -24,9 +24,18 @@ public interface BoardMapper {
 	// 게시글 상세 조회
 	 Board selectBoard(HashMap<String, Object> map);	
 	 
-	 //댓글목록
+	 //댓글 목록
 	 List<Comment> selectCommentList(HashMap<String, Object> map);
 	 
+	//게시글 전체 개수 
+	 int selectBoardCnt(HashMap<String, Object> map);
 	 
+	//댓글 입력
+	 int insertComment(HashMap<String, Object> map);
+	 
+	//조회수 증가
+	 int updateCnt(HashMap<String, Object> map);
+	 
+	
 	 
 }

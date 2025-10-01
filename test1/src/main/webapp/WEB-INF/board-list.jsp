@@ -28,6 +28,17 @@
             tr:nth-child(even) {
                 background-color: azure;
             }
+
+            #index {
+                margin-right: 5px;
+                text-decoration: none;
+            }
+
+            .active {
+                color: black;
+                font-size: 18px;
+                font-weight: bold;
+            }
         </style>
     </head>
 
@@ -47,6 +58,12 @@
             </div>
 
             <div>
+                <select v-model="pageSize" @change="fnList">
+                    <option value="5">5개씩</option>
+                    <option value="10">10개씩</option>
+                    <option value="20">20개씩</option>
+                </select>
+
                 <select v-model="kind" @change="fnList">
                     <option value="">::전체::</option>
                     <option value="1">::공지사항::</option>
@@ -55,6 +72,7 @@
                 </select>
 
                 <select v-model="order" @change="fnList">
+                    <option value="time">::시간순::</option>
                     <option value="num">::번호순::</option>
                     <option value="title">::제목순::</option>
                     <option value="cnt">::조회수::</option>
@@ -63,7 +81,7 @@
 
             </div>
 
-            <div style="float:right">
+            <div>
                 <table>
                     <tr>
                         <th>아이디</th>
@@ -77,7 +95,7 @@
                 </table>
             </div>
 
-            <div style="float:left">
+            <div>
                 <table>
                     <tr>
                         <th>번호</th>
@@ -108,18 +126,31 @@
                         <td>
                             <button v-if="sessionId == item.userId || sessionStatus == 'A'"
                                 @click="fnRemove(item.boardNo)">삭제</button>
-                            <button v-else-if @click="fnRemove(item.boardNo)" disabled>삭제</button>
+                            <button v-else @click="fnRemove(item.boardNo)" disabled>삭제</button>
 
                         </td>
 
                     </tr>
 
                 </table>
+
+                <div>
+
+                    <a id="index" v-if="page != 1" href="javascript:;" @click="fnMove(-1)">◀</a>
+
+                    <a id="index" href="javascript:;" v-for="num in index" @click="fnPage(num)">
+                        <span :class="{active : page == num}">{{num}}</span>
+                    </a>
+
+                    <a id="index" v-if="page != index" href="javascript:;" @click="fnMove(1)">▶</a>
+
+                </div>
+
             </div>
 
-            <div style="float:left">
+            <div>
 
-                <a href="board-add.do"><button>글쓰기</button></a>
+                <a href="#"><button @click="fnWrite(item.boardNo)">글쓰기</button></a>
 
             </div>
 
@@ -137,12 +168,15 @@
                     keyword: "",
                     list: [],
                     kind: "",
-                    order: "num",
+                    order: "time",
                     sessionId: "${sessionId}",
                     sessionStatus: "${sessionStatus}",
                     sessionName: "${sessionName}",
                     cNum: 0,
-                    searchOption: "all" //검색옵션 : 기본 all
+                    searchOption: "all", //검색옵션 : 기본 all
+                    pageSize: 5, //한페이지에 출력할 개수
+                    page: 1,    // 현재 페이지
+                    index: 0  // 최대 몇페이지인지 확인
                 };
             },
             methods: {
@@ -154,7 +188,10 @@
                         kind: self.kind,
                         order: self.order,
                         keyword: self.keyword,
-                        searchOption: self.searchOption
+                        searchOption: self.searchOption,
+                        pageSize: self.pageSize,
+                        page: (self.page - 1) * self.pageSize,
+
                     };
 
                     $.ajax({
@@ -165,6 +202,8 @@
                         success: function (data) {
                             console.log(data);
                             self.list = data.list;
+                            self.index = Math.ceil(data.cnt / self.pageSize);
+
                         }
                     });
                 },
@@ -207,7 +246,26 @@
 
                     pageChange("board-view.do", { boardNo: boardNo });
 
+                },
+
+                fnWrite: function (boardNo) {
+                    pageChange("board-add1.do", { boardNo: boardNo });
+                },
+
+                fnPage: function (num) {
+                    let self = this;
+                    self.page = num;
+                    self.fnList();
+                },
+
+                fnMove: function (num) {
+                    let self = this;
+                    self.page += num;
+                    self.fnList();
                 }
+
+
+
 
             }, // methods
             mounted() {

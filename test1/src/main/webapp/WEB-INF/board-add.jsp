@@ -40,7 +40,8 @@
                     </tr>
                     <tr>
                         <th>작성자</th>
-                        <td>{{userId}}</td>
+                        <td><input v-model="userId"></td>
+                        <!-- <td>{{userId}}</td> -->
                     </tr>
                     <tr>
                         <th>내용</th>

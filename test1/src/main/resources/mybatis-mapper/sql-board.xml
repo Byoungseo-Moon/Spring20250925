@@ -5,8 +5,12 @@
 <mapper namespace="com.example.test1.mapper.BoardMapper">
 	<select id="boardList" parameterType="hashmap" resultType="com.example.test1.model.Board">
 
-		SELECT B.*, TO_CHAR(CDATETIME, 'YYYY-MM-DD') CDATE, 
-					TO_CHAR(UDATETIME, 'YYYY-MM-DD') UDATE, NVL(CCNT,0) AS CNUM  
+		SELECT B.*, 
+			DECODE(TO_CHAR(CDATETIME, 'YYYY-MM-DD'), TO_CHAR(SYSDATE, 'YYYY-MM-DD'),
+       			   TO_CHAR(CDATETIME, 'HH24:MI:SS'),TO_CHAR(CDATETIME, 'YYYY-MM-DD')) CDATE, 
+			DECODE(TO_CHAR(UDATETIME, 'YYYY-MM-DD'), TO_CHAR(SYSDATE, 'YYYY-MM-DD'),
+       			   TO_CHAR(UDATETIME, 'HH24:MI:SS'),TO_CHAR(CDATETIME, 'YYYY-MM-DD')) UDATE, 		
+			NVL(CCNT,0) AS CNUM  
 		FROM TBL_BOARD B
 		LEFT JOIN (
 			SELECT BOARDNO, COUNT(*) AS CCNT
@@ -35,6 +39,10 @@
 		  
 		</if> 
 		
+		<if test="order == 'time'">
+		   ORDER BY B.CDATETIME DESC
+		</if>
+		
 		<if test="order == 'num'">
 		   ORDER BY B.BOARDNO ASC
 		</if>
@@ -45,7 +53,9 @@
 		
 		<if test="order == 'cnt'">
 		    ORDER BY B.CNT DESC
-		</if>					
+		</if>	
+		
+		OFFSET #{page} ROWS FETCH NEXT #{pageSize} ROWS ONLY				
 
 	</select>
 	
@@ -70,10 +80,51 @@
 		FROM TBL_COMMENT C
 		INNER JOIN TBL_USER U ON C.USERID = U.USERID
 		WHERE C.BOARDNO = #{boardNo}
+		ORDER BY C.CDATETIME ASC
 	</select>
 	
+	<insert id="insertComment" parameterType="hashmap">
+		INSERT INTO TBL_COMMENT
+		VALUES(COMMENT_SEQ.NEXTVAL, #{boardNo}, #{contents}, #{id}, 0, NULL, SYSDATE, SYSDATE)
+	</insert>	
+	
+	<update id="updateCnt" parameterType="hashmap">
+		UPDATE TBL_BOARD
+		SET
+			CNT = CNT + 1
+		WHERE BOARDNO = #{boardNo}
+	</update>
 	
 	
+	<select id="selectBoardCnt" parameterType="hashmap" resultType="int">
+
+		SELECT COUNT(*)			
+		FROM TBL_BOARD B
+						
+		WHERE 1=1 
+		
+		<if test="kind != '' and kind != null">
+			AND KIND = #{kind}
+		</if>
+		
+		<if test="searchOption == 'all'">
+			AND (TITLE LIKE '%' || #{keyword} || '%' OR
+		   		 USERID LIKE '%' || #{keyword} || '%'
+				)  
+		</if>   
+		
+		<if test="searchOption == 'title'">
+			AND TITLE LIKE '%' || #{keyword} || '%'
+		  
+		</if> 
+		
+		<if test="searchOption == 'id'">
+			AND USERID LIKE '%' || #{keyword} || '%'
+		  
+		</if> 
+		
+		</select>
+		
 	
 </mapper>
 
