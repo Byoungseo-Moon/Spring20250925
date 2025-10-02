@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.test1.mapper.MemberMapper;
 import com.example.test1.model.Member;
-import com.example.test1.model.Student;
+
 
 @Service
 public class MemberService {
@@ -79,6 +79,12 @@ public class MemberService {
 		}
 			
 		return resultMap;
+	}
+	
+	public void addUserImg(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		int cnt = memberMapper.insertUserImg(map);
+		
 	}
 	
 	

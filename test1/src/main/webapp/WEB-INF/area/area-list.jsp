@@ -50,10 +50,26 @@
 
             <div>
                 도/특별시 :
-                <select v-model="si" @change="fnList">
+                <select v-model="si" @change="fnGuList">
+                    <!-- 시도를 선택하면 거기에 들어 있는 구리스트를 가져올것 -->
                     <option value="">::전체::</option>
                     <option v-for="item in siList" :value="item.si">{{item.si}}</option>
                 </select>
+
+                구/시/군 :
+                <select v-model="gu" @change="fnDongList">
+                    <!-- @change="fnList" 를 select안에 넣으면 선택하는 순간 fnList동작되어 검색버튼이 필요 없음 -->
+                    <option value="">::선택::</option>
+                    <option v-for="item in guList" :value="item.gu">{{item.gu}}</option>
+                </select>
+
+                읍/면/동 :
+                <select v-model="dong">
+                    <option value="">::선택::</option>
+                    <option v-for="item in dongList" :value="item.dong">{{item.dong}}</option>
+                </select>
+
+                <button @click="fnList">검색</button>
 
             </div>
 
@@ -62,6 +78,7 @@
                     <option value="20">20개씩</option>
                     <option value="40">40개씩</option>
                     <option value="60">60개씩</option>
+                    <option value="200">200개씩</option>
                 </select>
             </div>
 
@@ -69,9 +86,9 @@
 
                 <table>
                     <tr>
-                        <th>특별시,도</th>
-                        <th>시,군,구</th>
-                        <th>읍,면,동</th>
+                        <th>특별시,도<br>({{siList.length}}/17)</th>
+                        <th>시,군,구<br>({{guList.length}}/252)</th>
+                        <th>읍,면,동<br>({{dongList.length}}/3,559)</th>
                         <!-- <th>NX</th>
                         <th>NY</th> -->
                     </tr>
@@ -118,7 +135,11 @@
                     page: 1,
                     index: 0,
                     siList: [],
-                    si: ""   //선택한 시/도의 값
+                    si: "",   //선택한 시/도의 값
+                    guList: [],
+                    gu: "",     //선택한 구의 값
+                    dongList: [],
+                    dong: ""
                 };
             },
             methods: {
@@ -128,7 +149,9 @@
                     let param = {
                         pageSize: self.pageSize,
                         page: (self.page - 1) * self.pageSize,
-                        si: self.si
+                        si: self.si,
+                        gu: self.gu,
+                        dong: self.dong
                     };
                     $.ajax({
                         url: "/area/list.dox",
@@ -174,6 +197,46 @@
                     });
                 },
 
+                fnGuList: function () {
+                    let self = this;
+                    let param = {
+                        si: self.si
+                    };
+                    $.ajax({
+                        url: "/area/gu.dox",
+                        dataType: "json",
+                        type: "POST",
+                        data: param,
+                        success: function (data) {
+                            console.log(data);
+                            self.gu = "";    // 상위 시도를 선택할 때 초기화
+                            self.dong = "";
+                            self.guList = data.list;
+                        }
+                    });
+                },
+
+                fnDongList: function () {
+                    let self = this;
+                    let param = {
+                        si: self.si,
+                        gu: self.gu
+                    };
+                    $.ajax({
+                        url: "/area/dong.dox",
+                        dataType: "json",
+                        type: "POST",
+                        data: param,
+                        success: function (data) {
+                            console.log(data);
+
+                            // 상위 시도를 선택할 때 초기화
+                            self.dong = "";
+                            self.dongList = data.list;
+                        }
+                    });
+                }
+
 
             }, // methods
             mounted() {
@@ -181,6 +244,8 @@
                 let self = this;
                 self.fnList();
                 self.fnSiList();
+                self.fnGuList();
+                self.fnDongList();
             }
         });
 

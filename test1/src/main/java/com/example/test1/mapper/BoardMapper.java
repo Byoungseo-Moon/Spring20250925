@@ -18,7 +18,7 @@ public interface BoardMapper {
 	// 게시글삭제
 	int deleteBoard(HashMap<String, Object> map);
 	
-	// 게시글등재
+	// 게시글등재 (파일첨부에 사용하는 boardNo가 map에 들어 있음)
 	int insertBoard(HashMap<String, Object> map);
 	
 	// 게시글 상세 조회
@@ -36,6 +36,13 @@ public interface BoardMapper {
 	//조회수 증가
 	 int updateCnt(HashMap<String, Object> map);
 	 
+	 //게시판리스트삭제
+	int deleteBoardList(HashMap<String, Object> map);
+
+	 //첨부파일(이미지) 업로드
+	int insertBoardImg(HashMap<String, Object> map);
 	
+	//복수첨부파일(이미지) 업로드
+	List<Board> selectFileList (HashMap<String, Object> map);
 	 
 }

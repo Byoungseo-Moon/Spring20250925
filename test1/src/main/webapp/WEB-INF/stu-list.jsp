@@ -43,6 +43,7 @@
             <div>
                 <table>
                     <tr>
+                        <th><input type="checkbox" value="item.stuNo" @click="fnAllCheck"> </th>
                         <th>학번</th>
                         <th>이름</th>
                         <th>학과</th>
@@ -52,6 +53,10 @@
                     </tr>
 
                     <tr v-for="item in list">
+                        <th>
+                            <input type="checkbox" :value="item.stuNo" v-model="selectItem">
+                            <!-- bind:value=""  -->
+                        </th>
                         <td>{{item.stuNo}}</td>
                         <td><a href="javascript:;" @click="fnView(item.stuNo)">{{item.stuName}}</a></td>
                         <td>{{item.stuDept}}</td>
@@ -61,6 +66,10 @@
                     </tr>
 
                 </table>
+            </div>
+
+            <div>
+                <button @click="fnAllRemove">선택삭제</button>
             </div>
 
         </div>
@@ -74,7 +83,10 @@
                 return {
                     // 변수 - (key : value)
                     keyword: "",
-                    list: []
+                    list: [],
+                    selectItem: [],    // stuNo가 여러개 담기므로 리스트 형태여야 함
+
+                    selectFlg: false
                 };
             },
             methods: {
@@ -108,6 +120,40 @@
                         data: param,
                         success: function (data) {
                             alert("삭제되었습니다!");
+                            self.fnList();
+                        }
+                    });
+                },
+
+                fnAllCheck: function () {
+                    let self = this;
+                    self.selectFlg = !self.selectFlg;
+
+                    if (self.selectFlg) {
+                        self.selectItem = [];  // 먼저 선택된 항목 리셋후 전체선택
+                        for (let i = 0; i < self.list.length; i++) {
+                            self.selectItem.push(self.list[i].stuNo);
+                        }
+                    } else {
+                        self.selectItem = [];
+                    }
+                },
+
+                fnAllRemove: function () {
+
+                    let self = this;
+
+                    // POST방식을 쓰고 있으므로 LIST를 JSON 형태로 변환
+                    var fList = JSON.stringify(self.selectItem);
+                    var param = { selectItem: fList };
+
+                    $.ajax({
+                        url: "stu/deleteList.dox",
+                        dataType: "json",
+                        type: "POST",
+                        data: param,
+                        success: function (data) {
+                            alert("삭제되었습니다.");
                             self.fnList();
                         }
                     });

@@ -19,5 +19,11 @@ public interface AreaMapper {
 		 
 		// 시/도 리스트
 		List<Area> selectSiList(HashMap<String, Object> map); 
+		
+		// 시구군 리스트
+		List<Area> selectGuList(HashMap<String, Object> map); 
+		
+		// 동읍면 리스트
+		List<Area> selectDongList(HashMap<String, Object> map); 
 
 }

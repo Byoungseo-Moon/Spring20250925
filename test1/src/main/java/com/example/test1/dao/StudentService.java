@@ -17,6 +17,7 @@ public class StudentService {
 
 	@Autowired
 	StudentMapper studentMapper;
+	
    	
 	public HashMap<String, Object> studentInfo(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
@@ -30,16 +31,16 @@ public class StudentService {
 				System.out.println(student.getStuDept());
 			}	
 			
-		resultMap.put("input", student);	
+		resultMap.put("info", student);	
 		resultMap.put("result", "success");
 			
 		return resultMap;
 	}
 	
+	
 	public HashMap<String, Object> studentList(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-				
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();				
 		
 		List<Student> list = studentMapper.studentList(map);
 						
@@ -49,18 +50,34 @@ public class StudentService {
 		return resultMap;
 	}
 
+	
+	// 한 학생 선택 삭제
 	public HashMap<String, Object> removeStudent(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-				
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();				
 		
 		int cnt = studentMapper.deleteStudent(map);	 						
 			
 		resultMap.put("result", "success");
 			
-		return resultMap;
+		return resultMap;		
 	}
 	
+	
+	// 여러 학생 선택 삭제
+	public HashMap<String, Object> removeStudentList(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();				
+		
+		int cnt = studentMapper.deleteStudentList(map);	 						
+			
+		resultMap.put("result", "success");
+			
+		return resultMap;
+	}	
+	
+	
+	// 학생등록
 	public HashMap<String, Object> getStudent(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();

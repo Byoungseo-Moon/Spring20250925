@@ -24,6 +24,12 @@
 	</insert>
 	
 	
+	<insert id="insertUserImg" parameterType="hashmap">
+		INSERT INTO TBL_USER_FILE
+		VALUES(FILE_SEQ.NEXTVAL, #{userId}, #{path}, #{fileName}, #{orgName}, #{size}, #{ext})
+	</insert>
+	
+	
 </mapper>
 
 

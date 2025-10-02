@@ -60,7 +60,11 @@
                     </tr>
                     <tr>
                         <th>내용</th>
-                        <td>{{info.contents}}</td>
+                        <td>
+                            <img v-for="item in fileList" :src="item.filePath">
+                            <br>
+                            {{info.contents}}
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -104,6 +108,7 @@
                     boardNo: "${boardNo}",   // request.getAttribute(test)를 단순히 함
                     info: {},
                     commentList: [],
+                    fileList: [],
                     sessionId: "${ sessionId }",
                     contents: "",
                     cnt: "${cnt}"
@@ -125,6 +130,7 @@
 
                             self.info = data.info;
                             self.commentList = data.commentList;
+                            self.fileList = data.fileList;
                         }
                     });
                 },

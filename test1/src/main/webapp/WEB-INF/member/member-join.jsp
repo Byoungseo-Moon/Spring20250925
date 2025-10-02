@@ -41,12 +41,13 @@
             <div>
                 <div>
                     <label>아이디:
-
                         <input v-if="!checkFlg" v-model="userId" placeholder="5글자 이상 입력">
                         <input v-else v-model="userId" disabled>
-
                     </label>
                     <button @click="fnCheck">중복체크</button>
+                </div>
+                <div>
+                    <input type="file" id="file1" name="file1">
                 </div>
                 <div>
                     <label>비밀번호: <input type="password" v-model="pwd" placeholder="6글자 이상 입력"></label>
@@ -310,10 +311,30 @@
                             console.log(data);
                             if (data.result == "success") {
                                 alert("회원가입이 완료되었습니다. 환영합니다.");
+
+                                //파일첨부
+                                var form = new FormData();
+                                form.append("file1", $("#file1")[0].files[0]);
+                                form.append("boardNo", data.boardNo);
+                                self.upload(form);
+
                                 location.href = "/member/login.do";
                             } else {
                                 alert("오류가 발생하였습니다.");
                             }
+                        }
+                    });
+                },
+
+                upload: function (form) {
+                    var self = this;
+                    $.ajax({
+                        url: "/fileUpload.dox"
+                        , type: "POST"
+                        , processData: false
+                        , contentType: false
+                        , data: form
+                        , success: function (response) {
 
                         }
                     });

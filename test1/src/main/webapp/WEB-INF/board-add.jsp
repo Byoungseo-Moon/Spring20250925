@@ -40,9 +40,15 @@
                     </tr>
                     <tr>
                         <th>작성자</th>
-                        <td><input v-model="userId"></td>
-                        <!-- <td>{{userId}}</td> -->
+                        <!-- <td><input v-model="userId"></td> -->
+                        <td>{{userId}}</td>
                     </tr>
+                    <tr>
+                        <th>파일첨부</th>
+                        <td><input type="file" id="file1" name="file1"> </td>
+
+                    </tr>
+
                     <tr>
                         <th>내용</th>
                         <td><textarea v-model="contents" cols="50" rows="20"></textarea></td>
@@ -63,11 +69,12 @@
                 return {
                     // 변수 - (key : value)
                     title: "",
-                    userId: "",
+                    userId: "${sessionId}",
                     contents: "",
                     sessionId: "${sessionId}"
                 };
             },
+
             methods: {
                 // 함수(메소드) - (key : function())
                 fnAdd: function () {
@@ -84,11 +91,35 @@
                         data: param,
                         success: function (data) {
                             alert("등록되었습니다.");
+                            console.log(data.boardNo);
+
+                            //파일첨부
+                            var form = new FormData();
+                            form.append("file1", $("#file1")[0].files[0]);
+                            form.append("boardNo", data.boardNo);
+                            self.upload(form);
+
                             location.href = "board-list.do";
 
                         }
                     });
+                },
+
+                upload: function (form) {
+                    var self = this;
+                    $.ajax({
+                        url: "/fileUpload.dox"
+                        , type: "POST"
+                        , processData: false
+                        , contentType: false
+                        , data: form
+                        , success: function (response) {
+
+                        }
+                    });
                 }
+
+
             }, // methods
             mounted() {
                 // 처음 시작할 때 실행되는 부분

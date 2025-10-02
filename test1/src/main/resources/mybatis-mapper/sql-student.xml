@@ -14,11 +14,21 @@
 		SELECT *
 		FROM STUDENT		
 	</select>
-	
+
+
 	<delete id="deleteStudent" parameterType="hashmap">
 		DELETE FROM STUDENT
 		WHERE STU_NO = #{stuNo}		
 	</delete>	
+	
+	<delete id="deleteStudentList" parameterType="hashmap">
+		DELETE FROM STUDENT
+		WHERE STU_NO IN 
+		<foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>				
+	</delete>	
+	
 	
 	<select id="selectStudent" parameterType="hashmap" resultType="com.example.test1.model.Student" >
 		SELECT 

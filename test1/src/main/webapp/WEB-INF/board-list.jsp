@@ -46,42 +46,43 @@
         <div id="app">
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
 
+            <div style="float:left">
+                <div>
+                    <select v-model="searchOption">
+                        <option value="all">::전체::</option>
+                        <option value="title">::제목::</option>
+                        <option value="id">::작성자::</option>
+                    </select>
+                    <input v-model="keyword">
+                    <button @click="fnList">검색</button>
+                </div>
 
-            <div>
-                <select v-model="searchOption">
-                    <option value="all">::전체::</option>
-                    <option value="title">::제목::</option>
-                    <option value="id">::작성자::</option>
-                </select>
-                <input v-model="keyword">
-                <button @click="fnList">검색</button>
+                <div>
+                    <select v-model="pageSize" @change="fnList">
+                        <option value="5">5개씩</option>
+                        <option value="10">10개씩</option>
+                        <option value="20">20개씩</option>
+                    </select>
+
+                    <select v-model="kind" @change="fnList">
+                        <option value="">::전체::</option>
+                        <option value="1">::공지사항::</option>
+                        <option value="2">::자유게시판::</option>
+                        <option value="3">::문의게시판::</option>
+                    </select>
+
+                    <select v-model="order" @change="fnList">
+                        <option value="time">::시간순::</option>
+                        <option value="num">::번호순::</option>
+                        <option value="title">::제목순::</option>
+                        <option value="cnt">::조회수::</option>
+                        <!-- value로 other를 쓰지 말것. 값이 한자일 경우 에러날 수 있음 -->
+                    </select>
+
+                </div>
             </div>
 
-            <div>
-                <select v-model="pageSize" @change="fnList">
-                    <option value="5">5개씩</option>
-                    <option value="10">10개씩</option>
-                    <option value="20">20개씩</option>
-                </select>
-
-                <select v-model="kind" @change="fnList">
-                    <option value="">::전체::</option>
-                    <option value="1">::공지사항::</option>
-                    <option value="2">::자유게시판::</option>
-                    <option value="3">::문의게시판::</option>
-                </select>
-
-                <select v-model="order" @change="fnList">
-                    <option value="time">::시간순::</option>
-                    <option value="num">::번호순::</option>
-                    <option value="title">::제목순::</option>
-                    <option value="cnt">::조회수::</option>
-                    <!-- value로 other를 쓰지 말것. 값이 한자일 경우 에러날 수 있음 -->
-                </select>
-
-            </div>
-
-            <div>
+            <div style="float:right">
                 <table>
                     <tr>
                         <th>아이디</th>
@@ -95,22 +96,24 @@
                 </table>
             </div>
 
-            <div>
+            <div style="float:left">
                 <table>
                     <tr>
+                        <th><input type="checkbox" value="boardNo" @click="fnAllCheck"></th>
                         <th>번호</th>
                         <th>제목</th>
                         <th>내용</th>
                         <th>아이디</th>
                         <th>조회수</th>
-                        <th>호응수</th>
+                        <!-- <th>호응수</th> -->
                         <th>종류</th>
                         <th>작성일</th>
-                        <th>갱신일</th>
+                        <!-- <th>갱신일</th> -->
                         <th>삭제</th>
                     </tr>
 
                     <tr v-for="item in list">
+                        <td><input type="checkbox" :value="item.boardNo" v-model="selectItem"></td>
                         <td>{{item.boardNo}}</td>
                         <td><a href="javascript:;" @click="fnView(item.boardNo)">{{item.title}}</a>
                             <span v-if="item.cNum != 0" style="color:red"> [{{item.cNum}}]</span>
@@ -119,15 +122,14 @@
                         <td>{{item.userId}}</td>
                         <td>{{item.cnt}}</td>
 
-                        <td>{{item.favorite}}</td>
+                        <!-- <td>{{item.favorite}}</td> -->
                         <td>{{item.kind}}</td>
                         <td>{{item.cDate}}</td>
-                        <td>{{item.uDate}}</td>
+                        <!-- <td>{{item.uDate}}</td> -->
                         <td>
                             <button v-if="sessionId == item.userId || sessionStatus == 'A'"
                                 @click="fnRemove(item.boardNo)">삭제</button>
                             <button v-else @click="fnRemove(item.boardNo)" disabled>삭제</button>
-
                         </td>
 
                     </tr>
@@ -146,13 +148,16 @@
 
                 </div>
 
+                <div>
+                    <button @click="fnAllRemove">선택삭제</button>
+                    <button @click="fnAdd">글쓰기</button>
+                </div>
+
             </div>
 
-            <div>
 
-                <a href="#"><button @click="fnWrite(item.boardNo)">글쓰기</button></a>
 
-            </div>
+
 
 
         </div>
@@ -176,7 +181,9 @@
                     searchOption: "all", //검색옵션 : 기본 all
                     pageSize: 5, //한페이지에 출력할 개수
                     page: 1,    // 현재 페이지
-                    index: 0  // 최대 몇페이지인지 확인
+                    index: 0,  // 최대 몇페이지인지 확인
+                    selectItem: [],
+                    selectFlg: false // checkbox전체선택등 확인에 쓰음
                 };
             },
             methods: {
@@ -208,6 +215,10 @@
                     });
                 },
 
+                fnAdd: function () {
+                    location.href = "board-add.do";
+                },
+
                 fnRemove: function (boardNo1) {// item.boardNo값을 boardNo1으로 받음
 
                     let self = this;
@@ -215,6 +226,40 @@
 
                     $.ajax({
                         url: "board-delete.dox",
+                        dataType: "json",
+                        type: "POST",
+                        data: param,
+                        success: function (data) {
+
+                            alert("삭제되었습니다!");
+                            self.fnList();
+                        }
+                    });
+                },
+
+                fnAllCheck: function () {
+                    let self = this;
+                    self.selectFlg = !self.selectFlg;
+
+                    if (self.selectFlg) {
+                        self.selectItem = [];
+                        for (let i = 0; i < self.list.length; i++) {
+                            self.selectItem.push(self.list[i].boardNo);
+                        }
+                    } else {
+                        self.selectItem = [];
+                    }
+                },
+
+                fnAllRemove: function () {// item.boardNo값을 boardNo1으로 받음
+
+                    let self = this;
+
+                    var fList = JSON.stringify(self.selectItem);
+                    var param = { selectItem: fList };
+
+                    $.ajax({
+                        url: "board/deleteList.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,
@@ -246,10 +291,6 @@
 
                     pageChange("board-view.do", { boardNo: boardNo });
 
-                },
-
-                fnWrite: function (boardNo) {
-                    pageChange("board-add1.do", { boardNo: boardNo });
                 },
 
                 fnPage: function (num) {
