@@ -32,7 +32,7 @@
 	<select id="selectFileList" parameterType="hashmap" resultType="com.example.test1.model.Member">
 			SELECT *
 			FROM TBL_USER_FILE			
-			WHERE USERIF = #{userId}			
+			WHERE USERID = #{userId}			
 	</select>
 	
 	
