@@ -41,10 +41,16 @@
 	</insert>
 	
 	
-	<insert id="insertUserImg" parameterType="hashmap">
+	<insert id="insertMemberImg" parameterType="hashmap">
 		INSERT INTO TBL_USER_FILE
 		VALUES(FILE_SEQ.NEXTVAL, #{userId}, #{path}, #{fileName}, #{orgName}, #{size}, #{ext})
 	</insert>
+
+	<select id="selectFileList" parameterType="hashmap" resultType="com.example.test1.model.Member">
+			SELECT *
+			FROM TBL_USER_FILE			
+			WHERE USERID = #{userId}			
+	</select>
 	
 	
 	<!--login fail시-->
