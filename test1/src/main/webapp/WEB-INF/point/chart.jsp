@@ -9,6 +9,7 @@
         <script src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="/js/page-change.js"></script>
         <style>
             table,
             tr,
@@ -27,6 +28,17 @@
             tr:nth-child(even) {
                 background-color: azure;
             }
+
+            #index {
+                margin-right: 5px;
+                text-decoration: none;
+            }
+
+            .active {
+                color: black;
+                font-size: 18px;
+                font-weight: bold;
+            }
         </style>
     </head>
 
@@ -35,19 +47,28 @@
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
 
             <div>
-                <div>
-                    <label>아이디: <input v-model="id"></label>
-                </div>
-                <div>
-                    <label>비밀번호: <input type="password" v-model="pwd"></label>
-                </div>
-                <div>
-                    <button @click="fnLogin">로그인</button>
-                    <a href="/member/join.do"><button>회원가입</button></a>
-                </div>
+                <table>
+                    <tr>
+                        <th>아이디</th>
+                        <th>이름</th>
+                        <th>주소</th>
+                        <th>성별</th>
+                        <th>최종포인트</th>
+                        <th>최종사용날짜</th>
+                    </tr>
+
+                    <tr v-for="item in list">
+                        <td>{{item.userId}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.address}}</td>
+                        <td>{{item.gender}}</td>
+                        <td>{{item.aPoint}}</td>
+                        <td>{{item.cDate}}</td>
+                    </tr>
+
+                </table>
+
             </div>
-
-
 
         </div>
     </body>
@@ -59,42 +80,38 @@
             data() {
                 return {
                     // 변수 - (key : value)
-                    id: "",
-                    pwd: ""
+
+                    list: []
 
                 };
             },
             methods: {
                 // 함수(메소드) - (key : function())
-                fnLogin: function () {
+                fnList: function () {
+
                     let self = this;
-                    let param = {       //server에 보내어 요청할 값
-                        id: self.id,
-                        pwd: self.pwd
+                    let param = {
 
                     };
+
                     $.ajax({
-                        url: "/member/login.dox",
+                        url: "/point/list.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,
                         success: function (data) {
-                            alert(data.msg);
-
-                            if (data.result == "success") {
-                                location.href = data.url;  // 일반사용자/관리자를 각기다른 url을 서버쪽에서 정의함
-                                // } else {
-                                //     alert("아이디가 존재하지 않습니다.")
-                                // }
-
-                            }
+                            console.log(data);
+                            self.list = data.list;
                         }
                     });
                 }
+
+
             }, // methods
             mounted() {
                 // 처음 시작할 때 실행되는 부분
                 let self = this;
+                self.fnList();
             }
         });
 

@@ -329,7 +329,7 @@
                 upload: function (form) {
                     var self = this;
                     $.ajax({
-                        url: "/fileUpload.dox"
+                        url: "/member/fileUpload.dox"
                         , type: "POST"
                         , processData: false
                         , contentType: false

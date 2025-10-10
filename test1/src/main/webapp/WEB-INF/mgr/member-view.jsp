@@ -34,18 +34,12 @@
         <div id="app">
             <!-- html 코드는 id가 app인 태그 안에서 작업 -->
 
-            <div>
-                <div>
-                    <label>아이디: <input v-model="id"></label>
-                </div>
-                <div>
-                    <label>비밀번호: <input type="password" v-model="pwd"></label>
-                </div>
-                <div>
-                    <button @click="fnLogin">로그인</button>
-                    <a href="/member/join.do"><button>회원가입</button></a>
-                </div>
-            </div>
+            아이디 : {{info.userId}}
+
+
+
+
+
 
 
 
@@ -59,35 +53,22 @@
             data() {
                 return {
                     // 변수 - (key : value)
-                    id: "",
-                    pwd: ""
-
+                    info: {},
+                    userId: "${userId}"
                 };
             },
             methods: {
                 // 함수(메소드) - (key : function())
-                fnLogin: function () {
+                fnList: function () {
                     let self = this;
-                    let param = {       //server에 보내어 요청할 값
-                        id: self.id,
-                        pwd: self.pwd
-
-                    };
+                    let param = { userId: self.userId };
                     $.ajax({
-                        url: "/member/login.dox",
+                        url: "/mgr/member/view.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,
                         success: function (data) {
-                            alert(data.msg);
 
-                            if (data.result == "success") {
-                                location.href = data.url;  // 일반사용자/관리자를 각기다른 url을 서버쪽에서 정의함
-                                // } else {
-                                //     alert("아이디가 존재하지 않습니다.")
-                                // }
-
-                            }
                         }
                     });
                 }

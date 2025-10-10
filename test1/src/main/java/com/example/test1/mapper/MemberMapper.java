@@ -19,9 +19,20 @@ public interface MemberMapper {
 	//회원 등재
 	int memberAdd(HashMap<String, Object> map);
 	
+	//회원리스트(관리자)
+	List<Member> selectMemberList(HashMap<String, Object> map);
+	
 	//첨부파일(이미지) 업로드
 	int insertUserImg(HashMap<String, Object> map);
 		
 	//복수 첨부파일(이미지) 업로드
 	List<Member> selectFileList (HashMap<String, Object> map);
+	
+	//로그인성공
+	int cntInit(HashMap<String, Object> map);	
+	
+	//로그인실패
+	int cntIncrease(HashMap<String, Object> map);
+	
+	
 }

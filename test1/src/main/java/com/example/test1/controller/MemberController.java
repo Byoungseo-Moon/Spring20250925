@@ -31,11 +31,29 @@ public class MemberController {
         return "/member/member-login"; // .jsp가 생략(properties에서 정의)
     }
 	
+	
 	@RequestMapping("/member/join.do") 
     public String join(Model model) throws Exception{
 
         return "/member/member-join"; // .jsp가 생략(properties에서 정의)
     }
+	
+	
+	@RequestMapping("/mgr/member/list.do") 
+    public String mgr(Model model) throws Exception{
+
+        return "/mgr/member-list"; // .jsp가 생략(properties에서 정의)
+    }
+	
+	
+	@RequestMapping("/mgr/member/view.do") 
+    public String view(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
+		
+		request.setAttribute("userId", map.get("userId"));
+
+        return "/mgr/member-view"; // .jsp가 생략(properties에서 정의)
+    }
+	
 	
 	@RequestMapping("/addr.do") 
     public String addr(Model model) throws Exception{
@@ -55,6 +73,7 @@ public class MemberController {
 		return new Gson().toJson(resultMap);
 	}
 	
+	
 	@RequestMapping(value = "/member/check.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String check(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -65,6 +84,7 @@ public class MemberController {
 		return new Gson().toJson(resultMap);
 	}
 	
+	
 	@RequestMapping(value = "/member/logout.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public String logout(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
@@ -74,6 +94,41 @@ public class MemberController {
 		
 		return new Gson().toJson(resultMap);
 	}
+	
+	
+	
+	@RequestMapping(value = "/mgr/member/list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String memberList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();		
+		
+		resultMap = memberService.getMemberList(map);
+		
+		return new Gson().toJson(resultMap);
+	}
+	
+	
+	@RequestMapping(value = "/mgr/member/view.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String memberView(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();		
+		
+		resultMap = memberService.getMemberView(map);
+		
+		return new Gson().toJson(resultMap);
+	}
+	
+	@RequestMapping(value = "/mgr/remove-cnt.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String resetCnt(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();		
+		
+		resultMap = memberService.removeCnt(map);
+		
+		return new Gson().toJson(resultMap);
+	}
+	
+	
 	
 	@RequestMapping(value = "/member/add.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -87,7 +142,7 @@ public class MemberController {
 	
 	
 // file첨부관련 controller
-	@RequestMapping("/fileUpload.dox")
+	@RequestMapping("/member/fileUpload.dox")
 	public String result(@RequestParam("file1") MultipartFile multi, @RequestParam("userId") int userId, HttpServletRequest request,HttpServletResponse response, Model model)
 	{
 		String url = null;
