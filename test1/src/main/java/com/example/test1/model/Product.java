@@ -11,6 +11,7 @@ public class Product {
 	private String sellYn;
 	private String filePath;
 	private String fileName;
+	private String orgName;
 	private String thumbnailYn;
 
 }
