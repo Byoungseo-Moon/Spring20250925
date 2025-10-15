@@ -7,7 +7,7 @@ import lombok.Data;
 public class Member {
 	
 	private String userId;
-	private String pwd;
+	private String password;
 	private String name;
 	private String addr;
 	private String birth;
@@ -19,6 +19,7 @@ public class Member {
 	private String udate;
 	private int cnt;
 	private String cBirth;
+	private String cPhone;
 	
 	private String fileNo;
 	private String filePath;

@@ -62,6 +62,13 @@ public class MemberController {
     }
 	
 	
+	@RequestMapping("/member/pwd.do") 
+    public String pwd(Model model) throws Exception{
+
+        return "/member/pwd"; // .jsp가 생략(properties에서 정의)
+    }
+	
+	
 	
 	@RequestMapping(value = "/member/login.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -69,6 +76,28 @@ public class MemberController {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();		
 		
 		resultMap = memberService.login(map);
+		
+		return new Gson().toJson(resultMap);
+	}
+	
+	
+	@RequestMapping(value = "/member/auth.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String auth(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();		
+		
+		resultMap = memberService.authMember(map);
+		
+		return new Gson().toJson(resultMap);
+	}
+	
+	
+	@RequestMapping(value = "/member/pwd.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String pwd(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();		
+		
+		resultMap = memberService.updatePwd(map);
 		
 		return new Gson().toJson(resultMap);
 	}

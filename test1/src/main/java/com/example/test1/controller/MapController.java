@@ -8,13 +8,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MapController {
 
 	@RequestMapping("/map.do")
-	public String product(Model model) throws Exception{
+	public String map(Model model) throws Exception{
 		return "/map/map1";
 	}
 	
 	@RequestMapping("/map2.do")
-	public String product2(Model model) throws Exception{
+	public String map2(Model model) throws Exception{
 		return "/map/map2";
+	}
+	
+	@RequestMapping("/map3.do")
+	public String map3(Model model) throws Exception{
+		return "/map/map3";
 	}
 			
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.test1.mapper.MemberMapper;
@@ -21,18 +22,78 @@ public class MemberService {
 	@Autowired
 	HttpSession session;	
 	
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
 	// login
 	public HashMap<String, Object> login(HashMap<String, Object> map){
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		Member member = memberMapper.memberLogin(map);
-		String message = ""; // login성공실패 여부 메시지
+		String message = ""; // login 성공실패 여부 메시지
 		String result = ""; // login 성공실패여부
-		int cnt = 0;
+		int cnt = 0;	
 		
-//		String message = member != null ? "로그인 성공!" : "로그인 실패!"; 		
-//		String result = member != null ? "success" : "fail"; 
+		map.put("userId", map.get("id"));   // login 때 #{id}를 썼는데, 중복체크할 때 #{userId}를 써서 parameter가 달라 문제됨..	
+
+		/* 해시 적용 후 */
+		if(member != null) {
+			//아이디가 존재하므로 비밀번호 비교
+			//사용자가 보낸 비밀번호를 map에서 꺼낸 후 해시화한 값과
+			//member 객체안에 있는 이미 해시화되어 db에 저장된 password와 비교
+						
+			Boolean loginFlg = passwordEncoder.matches((String) map.get("pwd"), member.getPassword());			
+			
+			
+			System.out.println(loginFlg);	
+			
+			System.out.println(map.get("pwd"));
+			System.out.println(member.getPassword());
+			if(loginFlg) {
+				
+				if(member.getCnt() >=5) {
+					//비밀번호 5회이상 틀린경우
+					message = "비밀번호를 5회 이상 잘못 입력하였습니다.";									
+					
+				} else {
+					//로그인 성공 : 
+					memberMapper.cntInit(map);
+					
+					session.setAttribute("sessionId", member.getUserId());
+					session.setAttribute("sessionName", member.getName());
+					session.setAttribute("sessionStatus", member.getStatus());
+					
+					if(member.getStatus().equals("A")) {
+						resultMap.put("url", "/mgr/member/list.do");
+					} else {
+						resultMap.put("url", "/main.do");
+					}
+					
+					if(member.getPhone() == map.get("phone")) {
+						resultMap.put("url", "/member/pwd.do");
+					} else {
+						message = "회원정보를 확인해 주세요.";
+						resultMap.put("url", "/member/login.do");
+					}
+				}
+				
+			} else {				
+											
+				if(member.getCnt() >= 5) {					
+					message = "비밀번호를 5회 이상 잘못 입력하였습니다.";
+				} else {
+					message = "패스워드를 확인해 주세요."; // 아이디는 있는데 pw를 잘못입력한 경우
+					memberMapper.cntIncrease(map);
+				}
+			}			
+			
+		} else {
+			//아이디 없음
+			message = "아이디가 존재하지 않습니다.";
+		}
+			
 		
+		/* Hash 적용 전
 		if(member != null && member.getCnt() >= 5) {
 			message = "비밀번호를 5회 이상 잘못 입력하였습니다.";
 			result = "success";
@@ -69,7 +130,8 @@ public class MemberService {
 			} else {
 				message = "아이디가 존재하지 않습니다.";
 			}
-		}		
+		}	
+	      해시 적용 전  */
 		
 		resultMap.put("msg", message);
 		resultMap.put("result", result);
@@ -111,7 +173,10 @@ public class MemberService {
 	public HashMap<String, Object> memberInsert(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-				
+		
+		String hashPwd = passwordEncoder.encode((String) map.get("pwd")); // map에서 pwd를 꺼낸뒤 해시화		
+		map.put("hashPwd", hashPwd);  // 이후 password는 hash화 된것으로 query에서 변수명이 hashPwd
+		
 		int cnt = memberMapper.memberAdd(map);	
 		if(cnt < 1) {
 			resultMap.put("result", "fail");
@@ -177,8 +242,61 @@ public class MemberService {
 	
 	public void addUserImg(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
-		int cnt = memberMapper.insertUserImg(map);
+		int cnt = memberMapper.insertUserImg(map);		
+	}
+	
+	
+	public HashMap<String, Object> authMember(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
+		try {
+			Member member = memberMapper.authMember1(map);
+			resultMap.put("Info",member);
+			resultMap.put("result", "success");			
+			
+			// alternative로 진행하는 경우
+//			int cnt = memberMapper.authMember2(map);
+//			if(cnt < 1) {
+//				resultMap.put("result", "fail");
+//			} else {
+//				resultMap.put("result", "success");
+//			}
+			
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());  // 어떤 오류인지 확인하기 위한 것
+		}
+			
+		return resultMap;
+	}
+	
+	
+	public HashMap<String, Object> updatePwd(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		try {
+			Member member = memberMapper.memberLogin(map);
+			
+			Boolean pwdFlg = passwordEncoder.matches((String) map.get("pwd"), member.getPassword());
+			if(pwdFlg) {
+				resultMap.put("result", "fail");
+				resultMap.put("msg", "비밀번호가 이전과 동일합니다.");
+			} else {
+				String hashPwd = passwordEncoder.encode((String) map.get("pwd"));
+				map.put("hashPwd", hashPwd);
+				int cnt = memberMapper.updatePwd(map);		 // int cnt는 쓰지 않아도 됨	
+				resultMap.put("result", "success");	
+				resultMap.put("msg", "수정되었습니다.");
+			}						
+			
+		} catch (Exception e) {
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());  // 어떤 오류인지 확인하기 위한 것
+		}
+			
+		return resultMap;
 	}
 	
 	

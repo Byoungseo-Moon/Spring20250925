@@ -4,10 +4,37 @@
 
 <mapper namespace="com.example.test1.mapper.MemberMapper">
 	<select id="memberLogin" parameterType="hashmap" resultType="com.example.test1.model.Member">
+	
+		SELECT * 
+		FROM TBL_USER
+		WHERE USERID = #{id} 		
+				
+	</select>
+	
+	<select id="authMember1" parameterType="hashmap" resultType="com.example.test1.model.Member">
 		SELECT *
 		FROM TBL_USER
-		WHERE USERID = #{id} AND PASSWORD = #{pwd}   		
+		WHERE 
+			USERID = #{userId} AND NAME = #{name}
+			AND REPLACE(PHONE, '-', '') = #{phone}	
 	</select>
+	
+	<select id="authMember2" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*)
+		FROM TBL_USER
+		WHERE 
+			USERID = #{userId} AND NAME = #{name}
+			AND REPLACE(PHONE, '-', '') = REPLACE(#{phone}, '-', '')	
+	</select>
+	
+	
+	<update id="updatePwd" parameterType="hashmap">
+		UPDATE TBL_USER
+		SET
+			PASSWORD = #{hashPwd)
+		WHERE USERID = #{userId}	
+	</update>
+	
 	
 	<select id="selectMemberList" parameterType="hashmap" resultType="com.example.test1.model.Member">
 		SELECT
@@ -36,8 +63,8 @@
 	
 	<insert id="memberAdd" parameterType="hashmap">
 		INSERT INTO TBL_USER 
-		VALUES(#{userId}, #{pwd}, #{name}, NULL, NULL, NULL, #{addr}, #{phone},
-		       NULL, #{gender}, #{status}, SYSDATE, SYSDATE)
+		VALUES(#{userId}, #{hashPwd}, #{name}, NULL, NULL, NULL, #{addr}, #{phone},
+		       NULL, #{gender}, #{status}, SYSDATE, SYSDATE, 0)
 	</insert>
 	
 	
