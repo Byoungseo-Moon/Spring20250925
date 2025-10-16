@@ -36,15 +36,13 @@
 
             <div>
                 <div>
-                    <label>아이디: <input v-model="id"></label>
+                    <label>아이디: <input v-model="userId"></label>
                 </div>
-                <div>
+                <!-- <div>
                     <label>비밀번호: <input type="password" v-model="pwd"></label>
-                </div>
+                </div> -->
                 <div>
-                    <button @click="fnLogin">로그인</button>
-                    <a href="/member/join.do"><button>회원가입</button></a>
-                    <a href="/member/pwd.do"><button>비밀번호찾기</button></a>
+                    <button @click="fnLogin">로그인</button>                    
                 </div>
                 
             </div>
@@ -61,8 +59,8 @@
             data() {
                 return {
                     // 변수 - (key : value)
-                    id: "",
-                    pwd: ""
+                    userId: ""
+                    // pwd: ""
 
                 };
             },
@@ -70,14 +68,13 @@
                 // 함수(메소드) - (key : function())
                 fnLogin: function () {
                     let self = this;
-                    let param = {       //server에 보내어 요청할 값
-                        id: self.id,
-                        userId: self.id,
-                        pwd: self.pwd
+                    let param = {       //server에 보내어 요청할 값                        
+                        userId: self.userId,
+                        // pwd: self.pwd
 
                     };
                     $.ajax({
-                        url: "/member/login.dox",
+                        url: "/example/bbs/login.dox",
                         dataType: "json",
                         type: "POST",
                         data: param,
@@ -86,11 +83,7 @@
 
                             if (data.result == "success") {
                                 location.href = data.url;  // 일반사용자/관리자를 각기다른 url을 서버쪽에서 정의함
-                                // } else {
-                                //     alert("아이디가 존재하지 않습니다.")
-                                // }
-
-                            }
+                            } 
                         }
                     });
                 }

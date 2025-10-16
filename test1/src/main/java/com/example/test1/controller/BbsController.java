@@ -16,93 +16,75 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.test1.dao.ProductService;
+import com.example.test1.dao.BbsService;
 import com.google.gson.Gson;
 
 @Controller
-public class ProductController {
-	
-	@Autowired
-	ProductService productService;
+public class BbsController {
 
-	@RequestMapping("/product.do") 
-    public String product(Model model) throws Exception{
-        return "/product";
+	@Autowired
+	BbsService bbsService;
+	
+	@RequestMapping("/bbs/list.do") 
+    public String list(Model model) throws Exception{
+
+        return "/example/bbs-list"; // .jsp가 생략(properties에서 정의)
     }
 	
 	
-	@RequestMapping("/product/view.do") 
-    public String view(HttpServletRequest request, Model model, @RequestParam HashMap<String, Object> map) throws Exception{
-				
-		request.setAttribute("foodNo", map.get("foodNo"));
-				
-        return "/product-view"; // parameter가 있는 것으로 request객체 정의가 필요함. request.setAttribute(), request.getAttribute()
-    } 
-	
-	
-	@RequestMapping("/product/add.do") 
-    public String productAdd(Model model) throws Exception{
-        return "/product-add";
+	@RequestMapping("/bbs/add.do") 
+    public String add(Model model) throws Exception{
+
+        return "/example/bbs-add"; // .jsp가 생략(properties에서 정의)
     }
 	
 	
+	@RequestMapping("/bbs/login.do") 
+    public String login(Model model) throws Exception{
+
+        return "/example/bbs-login"; // .jsp가 생략(properties에서 정의)
+    }
+		
 	
-	@RequestMapping(value = "/product/list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	
+	@RequestMapping(value = "/bbs/list.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String productList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+	public String bbsList(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();		
 		
-		resultMap = productService.getProductList(map);
-		
-		return new Gson().toJson(resultMap);
-	}	
-	
-	
-	@RequestMapping(value = "/product/view.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	@ResponseBody
-	public String productView(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap = productService.getProduct(map);
+		resultMap = bbsService.bbsList(map);
 		
 		return new Gson().toJson(resultMap);
 	}
 	
 	
-	@RequestMapping(value = "/product/menu.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/bbs/add.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String productAdd(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+	public String bbsAdd(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();		
 		
-		resultMap = productService.getMenuList(map);
+		resultMap = bbsService.addBbs(map);
 		
 		return new Gson().toJson(resultMap);
 	}
 	
 	
-	@RequestMapping(value = "/product/add.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@RequestMapping(value = "/bbs/login.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String addProduct(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
+	public String login(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();		
 		
-		resultMap = productService.addProduct(map);
+		resultMap = bbsService.login(map);
 		
 		return new Gson().toJson(resultMap);
 	}
 	
 	
-	@RequestMapping(value = "/product/payment.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-	@ResponseBody
-	public String productPay(Model model, @RequestParam HashMap<String, Object> map) throws Exception {
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap = productService.addPaymentHistory(map);
-		
-		return new Gson().toJson(resultMap);
-	}
 	
 	
 	// file첨부관련 controller
-	@RequestMapping("/product/fileUpload.dox")
-	public String result(@RequestParam("file1") MultipartFile multi, @RequestParam("foodNo") int foodNo, HttpServletRequest request,HttpServletResponse response, Model model)
+	@RequestMapping("bbs/fileUpload.dox")
+	public String result(@RequestParam("file1") MultipartFile multi, @RequestParam("bbsNum") int bbsNum, HttpServletRequest request,HttpServletResponse response, Model model)
 	{
 		String url = null;
 		String path="c:\\img";
@@ -130,13 +112,13 @@ public class ProductController {
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				map.put("fileName", saveFileName);
 				map.put("path", "/img/" + saveFileName);
-				map.put("foodNo", foodNo);
+				map.put("bbsNum", bbsNum);
 				map.put("orgName", originFilename);
 				map.put("size", size);
 				map.put("ext", extName);
 				
 				// insert 쿼리 실행
-			    productService.addProductImg(map);
+			    bbsService.addBbsFile(map);
 				
 				model.addAttribute("filename", multi.getOriginalFilename());
 				model.addAttribute("uploadPath", file.getAbsolutePath());
@@ -165,7 +147,6 @@ public class ProductController {
 		
 		return fileName;
 	}
-	
 	
 	
 }

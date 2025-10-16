@@ -31,4 +31,9 @@ public interface ProductMapper {
 	//복수첨부파일(이미지) 업로드
 	List<Product> selectImgList (HashMap<String, Object> map);
 	
+	//제품 결제 이력 삽입
+	int paymentHistory(HashMap<String, Object> map);
+			
+		
+	
 }

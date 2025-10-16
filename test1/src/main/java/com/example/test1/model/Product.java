@@ -12,6 +12,6 @@ public class Product {
 	private String filePath;
 	private String fileName;
 	private String orgName;
-	private String thumbnailYn;
+	private String thumbnailYn;		
 
 }

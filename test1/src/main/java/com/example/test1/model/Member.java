@@ -23,7 +23,7 @@ public class Member {
 	
 	private String fileNo;
 	private String filePath;
-	private String fileName;
-		
+	private String fileName;	
+	
 	
 }

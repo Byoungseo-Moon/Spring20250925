@@ -3,7 +3,10 @@ package com.example.test1.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.test1.mapper.BoardMapper;
@@ -17,6 +20,14 @@ public class BoardService {
 
 	@Autowired             // 재사용을 위한 annotation
 	BoardMapper boardMapper;
+	
+	@Autowired
+	HttpSession session;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
+	
    	
 	public HashMap<String, Object> boardList(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub

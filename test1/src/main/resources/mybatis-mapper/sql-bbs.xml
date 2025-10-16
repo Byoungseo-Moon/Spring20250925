@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.test1.mapper.BbsMapper">
+
+	<select id="bbsList" parameterType="hashmap" resultType="com.example.test1.model.Bbs">
+		SELECT *
+		FROM TBL_BBS
+	</select>
+	
+	
+	<insert id="insertBbs" parameterType="hashmap" useGeneratedKeys="true" keyColumn="BBS_NUM" keyProperty="bbsNum">		
+		INSERT INTO TBL_BBS 
+		VALUES(BBS_SEQ.NEXTVAL, #{title}, '', 0, #{userId}, SYSDATE, SYSDATE, #{contents})       
+	</insert>
+	
+	<insert id="insertBbsFile" parameterType="hashmap">
+		INSERT INTO TBL_BBS_FILE
+		VALUES(BBSFILE_SEQ.NEXTVAL, #{bbsNum}, #{path}, #{fileName}, #{orgName}, #{size}, #{ext})
+	</insert>
+	
+	
+	
+	
+	
+	<select id="bbsLogin" parameterType="hashmap" resultType="com.example.test1.model.Bbs">	
+		SELECT * 
+		FROM TBL_BBS		
+		WHERE USERID = #{userId} 				
+	</select>
+
+
+
+
+</mapper>

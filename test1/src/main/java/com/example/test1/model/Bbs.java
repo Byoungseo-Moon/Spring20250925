@@ -1,25 +1,21 @@
 package com.example.test1.model;
 
 import lombok.Data;
-//
+
 @Data
-public class Board {
-	private int boardNo;
+public class Bbs {
+	
+	private int bbsNum;
 	private String title;
 	private String contents;
 	private String contents2;
+	private String hit;
 	private String userId;
-	private int cnt;
-	private int favorite;
-	private int kind;
-	private String cDate;
-	private String uDate;
-	
-	private String cNum;
+	private String cDateTime;
+	private String uDateTime;
 	
 	private String fileNo;
 	private String filePath;
-	private String fileName;	
-	
-}		
-	
+	private String fileName;
+
+}

@@ -7,7 +7,8 @@
 	
 		SELECT * 
 		FROM TBL_USER
-		WHERE USERID = #{id} 		
+		WHERE USERID = #{id} 	
+		<!-- AND PASSWORD = #{pwd} 해시적용 후 제거 -->	
 				
 	</select>
 	
@@ -31,7 +32,7 @@
 	<update id="updatePwd" parameterType="hashmap">
 		UPDATE TBL_USER
 		SET
-			PASSWORD = #{hashPwd)
+			PASSWORD = #{hashPwd}
 		WHERE USERID = #{userId}	
 	</update>
 	
@@ -96,6 +97,7 @@
 			CNT = 0
 		WHERE USERID = #{id}	
 	</update>
+	
 	
 	
 </mapper>

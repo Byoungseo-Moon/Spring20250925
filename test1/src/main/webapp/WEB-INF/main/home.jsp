@@ -37,7 +37,9 @@
             {{sessionName}} 환영합니다. 메인페이지입니다!!!
 
             <div>
+
                 <a href="/board-list.do"><button>게시판으로 이동</button></a>
+                <a href="/product.do"><button>제품목록으로 이동</button></a>
                 <button @click="fnLogout">로그아웃</button>
             </div>
 

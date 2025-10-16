@@ -29,11 +29,13 @@ public class MemberService {
 	public HashMap<String, Object> login(HashMap<String, Object> map){
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
 		Member member = memberMapper.memberLogin(map);
+		
 		String message = ""; // login 성공실패 여부 메시지
 		String result = ""; // login 성공실패여부
-		int cnt = 0;	
-		
+		int cnt = 0;
+				
 		map.put("userId", map.get("id"));   // login 때 #{id}를 썼는데, 중복체크할 때 #{userId}를 써서 parameter가 달라 문제됨..	
 
 		/* 해시 적용 후 */
@@ -42,22 +44,20 @@ public class MemberService {
 			//사용자가 보낸 비밀번호를 map에서 꺼낸 후 해시화한 값과
 			//member 객체안에 있는 이미 해시화되어 db에 저장된 password와 비교
 						
-			Boolean loginFlg = passwordEncoder.matches((String) map.get("pwd"), member.getPassword());			
+			Boolean loginFlg = passwordEncoder.matches((String) map.get("pwd"), member.getPassword());					
 			
-			
-			System.out.println(loginFlg);	
-			
-			System.out.println(map.get("pwd"));
-			System.out.println(member.getPassword());
 			if(loginFlg) {
 				
 				if(member.getCnt() >=5) {
 					//비밀번호 5회이상 틀린경우
-					message = "비밀번호를 5회 이상 잘못 입력하였습니다.";									
+					message = "비밀번호를 5회 이상 잘못 입력하였습니다.";	
+					result = "fail";
 					
 				} else {
-					//로그인 성공 : 
+					//로그인 성공 : cnt = 0
 					memberMapper.cntInit(map);
+					message = "로그인 성공";
+					result = "success";
 					
 					session.setAttribute("sessionId", member.getUserId());
 					session.setAttribute("sessionName", member.getName());
@@ -69,27 +69,26 @@ public class MemberService {
 						resultMap.put("url", "/main.do");
 					}
 					
-					if(member.getPhone() == map.get("phone")) {
-						resultMap.put("url", "/member/pwd.do");
-					} else {
-						message = "회원정보를 확인해 주세요.";
-						resultMap.put("url", "/member/login.do");
-					}
+//					if(member.getPhone() == map.get("phone")) {
+//						resultMap.put("url", "/member/pwd.do");
+//					} else {
+//						message = "회원정보를 확인해 주세요.";
+//						resultMap.put("url", "/member/login.do");
+//					}
 				}
 				
-			} else {				
-											
-				if(member.getCnt() >= 5) {					
-					message = "비밀번호를 5회 이상 잘못 입력하였습니다.";
-				} else {
-					message = "패스워드를 확인해 주세요."; // 아이디는 있는데 pw를 잘못입력한 경우
-					memberMapper.cntIncrease(map);
-				}
+			} else {		
+				
+				cnt = memberMapper.cntIncrease(map);
+				message = "패스워드를 확인해 주세요."; // 아이디는 있는데 pw를 잘못입력한 경우
+				result = "fail";							
+				
 			}			
 			
 		} else {
 			//아이디 없음
 			message = "아이디가 존재하지 않습니다.";
+			result = "fail";
 		}
 			
 		
@@ -296,8 +295,11 @@ public class MemberService {
 			System.out.println(e.getMessage());  // 어떤 오류인지 확인하기 위한 것
 		}
 			
-		return resultMap;
+		return resultMap;		
+		
 	}
+	
+	
 	
 	
 }

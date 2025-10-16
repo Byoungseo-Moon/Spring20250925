@@ -109,5 +109,24 @@ public class ProductService {
 				
 	}	
 	
+	public HashMap<String, Object> addPaymentHistory(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		try{				
+			int cnt = productMapper.paymentHistory(map);	
+			if(cnt < 1) {
+				resultMap.put("result", "fail");
+			} else {
+				resultMap.put("result", "success");
+			}
+		} catch(Exception e) {
+			resultMap.put("result", "fail");
+			System.out.println(e.getMessage());  // 어떤 오류인지 확인하기 위한 것
+		}
+			
+		return resultMap;
+	}
+	
 	
 }

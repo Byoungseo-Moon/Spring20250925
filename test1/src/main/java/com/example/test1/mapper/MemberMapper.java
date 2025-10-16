@@ -41,7 +41,6 @@ public interface MemberMapper {
 	int authMember2(HashMap<String, Object> map);
 	
 	//비밀번호 변경
-	int updatePwd(HashMap<String, Object> map);
-		
+	int updatePwd(HashMap<String, Object> map);	
 	
 }
