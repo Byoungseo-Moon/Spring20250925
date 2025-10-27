@@ -100,7 +100,7 @@
                     price: "",
                     menuList: [],
                     menuNo: "",
-                    menuPart: "10"  // 한식 기본값
+                    menuPart: "10"  // 한식코드 기본값
 
                 };
             },
@@ -145,17 +145,19 @@
 
                             console.log(data);
                             if (data.result == "success") {
+
+                                //파일첨부
+                                var form = new FormData();
+                                form.append("file1", $("#file1")[0].files[0]);
+                                form.append("foodNo", data.foodNo);
+                                self.upload(form);
+
                                 alert("등록되었습니다.");
                                 location.href = "/product.do";
+                                
                             } else {
                                 alert("오류가 발생하였습니다.");
                             }
-
-                            //파일첨부
-                            var form = new FormData();
-                            form.append("file1", $("#file1")[0].files[0]);
-                            form.append("foodNo", data.foodNo);
-                            self.upload(form);
                         }
                     });
                 },

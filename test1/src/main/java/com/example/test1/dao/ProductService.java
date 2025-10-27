@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.test1.mapper.ProductMapper;
-import com.example.test1.model.Board;
-import com.example.test1.model.Comment;
+
 import com.example.test1.model.Menu;
 import com.example.test1.model.Product;
 
@@ -115,11 +114,8 @@ public class ProductService {
 		
 		try{				
 			int cnt = productMapper.paymentHistory(map);	
-			if(cnt < 1) {
-				resultMap.put("result", "fail");
-			} else {
-				resultMap.put("result", "success");
-			}
+			resultMap.put("result", "success");
+			
 		} catch(Exception e) {
 			resultMap.put("result", "fail");
 			System.out.println(e.getMessage());  // 어떤 오류인지 확인하기 위한 것

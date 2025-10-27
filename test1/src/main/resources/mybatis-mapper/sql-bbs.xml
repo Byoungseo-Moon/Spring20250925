@@ -7,30 +7,44 @@
 	<select id="bbsList" parameterType="hashmap" resultType="com.example.test1.model.Bbs">
 		SELECT *
 		FROM TBL_BBS
+		WHERE (TITLE LIKE '%' || #{keyword} || '%'
+			  OR USERID LIKE '%' || #{keyword} || '%')
+		OFFSET #{page} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+	</select>
+	
+	<select id="selectBbsListCnt" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*)
+		FROM TBL_BBS
+		WHERE (TITLE LIKE '%' || #{keyword} || '%'
+			  OR USERID LIKE '%' || #{keyword} || '%')		
 	</select>
 	
 	
 	<insert id="insertBbs" parameterType="hashmap" useGeneratedKeys="true" keyColumn="BBS_NUM" keyProperty="bbsNum">		
 		INSERT INTO TBL_BBS 
-		VALUES(BBS_SEQ.NEXTVAL, #{title}, '', 0, #{userId}, SYSDATE, SYSDATE, #{contents})       
-	</insert>
-	
-	<insert id="insertBbsFile" parameterType="hashmap">
-		INSERT INTO TBL_BBS_FILE
-		VALUES(BBSFILE_SEQ.NEXTVAL, #{bbsNum}, #{path}, #{fileName}, #{orgName}, #{size}, #{ext})
+		VALUES(BBS_SEQ.NEXTVAL, #{title}, #{contents}, 0, #{userId}, SYSDATE, SYSDATE)       
 	</insert>
 	
 	
-	
-	
-	
-	<select id="bbsLogin" parameterType="hashmap" resultType="com.example.test1.model.Bbs">	
-		SELECT * 
-		FROM TBL_BBS		
-		WHERE USERID = #{userId} 				
+	<delete id="deleteBbs" parameterType="hashmap">
+		DELETE FROM TBL_BBS
+		WHERE BBS_NUM = #{selectItem}		
+	</delete>	
+		
+
+	<select id="selectBbs" parameterType="hashmap" resultType="com.example.test1.model.Bbs">
+		SELECT *
+		FROM TBL_BBS
+		WHERE BBS_NUM = #{bbsNum}
 	</select>
-
-
+	
+	<update id="updateBbs" parameterType="hashmap">
+		UPDATE TBL_BBS
+		SET
+			TITLE = #{title},
+			CONTENTS = #{contents}			
+		WHERE BBS_NUM = #{bbsNum}
+	</update>
 
 
 </mapper>

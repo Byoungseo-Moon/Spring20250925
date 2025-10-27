@@ -9,6 +9,7 @@
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
         <script src="/js/page-change.js"></script>
+        <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> <!-- CDN 번역관련-->
         <title>쇼핑몰 헤더</title>
         <link rel="stylesheet" href="/css/product-style.css">
     </head>
@@ -48,6 +49,8 @@
             </header>
 
             <main>
+
+                <div id="google_translate_element"></div> <!-- 번역 관련-->
                 <section class="product-list">
                     <!-- 제품 항목 -->
                     <div v-for="item in list" class="product-item">
@@ -102,7 +105,7 @@
                     });
                 },
 
-                fnView(foodNo) {
+                fnView: function(foodNo) {
 
                     pageChange("/product/view.do", { foodNo: foodNo });
 
@@ -113,6 +116,8 @@
             mounted() {
                 var self = this;
                 self.fnList('', '');
+
+                new google.translate.TranslateElement({pageLanguage: 'ko',autoDisplay: false}, 'google_translate_element'); <!-- 시작할 때 실행되어야 함-->
             }
         });
         app.mount('#app');

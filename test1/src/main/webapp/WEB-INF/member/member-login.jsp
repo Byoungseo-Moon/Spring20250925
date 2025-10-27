@@ -44,7 +44,11 @@
                 <div>
                     <button @click="fnLogin">로그인</button>
                     <a href="/member/join.do"><button>회원가입</button></a>
-                    <a href="/member/pwd.do"><button>비밀번호찾기</button></a>
+                    <a href="/member/pwd.do"><button>비밀번호찾기</button></a>                                        
+                </div>
+
+                <div>
+                    <a :href="location"> <img src="/img/kakao.png"> </a>
                 </div>
                 
             </div>
@@ -62,8 +66,9 @@
                 return {
                     // 변수 - (key : value)
                     id: "",
-                    pwd: ""
-
+                    pwd: "",
+                    location: "${location}"
+                    
                 };
             },
             methods: {
@@ -73,7 +78,7 @@
                     let param = {       //server에 보내어 요청할 값
                         id: self.id,
                         userId: self.id,
-                        pwd: self.pwd
+                        pwd: self.pwd                        
 
                     };
                     $.ajax({
@@ -94,10 +99,13 @@
                         }
                     });
                 }
+
+
             }, // methods
             mounted() {
                 // 처음 시작할 때 실행되는 부분
                 let self = this;
+                
             }
         });
 

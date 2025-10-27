@@ -3,20 +3,31 @@ package com.example.test1.controller;
 import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.test1.dao.MemberService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 @Controller
@@ -25,8 +36,20 @@ public class MemberController {
 	@Autowired
 	MemberService memberService;
 
+	
+	@Value("${client_id}")     // import할 때 bean붙은거 선택: properties에서 가져옮
+	private String client_id;
+
+    @Value("${redirect_uri}")
+    private String redirect_uri;
+	
+	
+	
 	@RequestMapping("/member/login.do") 
     public String login(Model model) throws Exception{
+		
+		String location = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri;
+        model.addAttribute("location", location);
 
         return "/member/member-login"; // .jsp가 생략(properties에서 정의)
     }
@@ -67,8 +90,7 @@ public class MemberController {
 
         return "/member/pwd"; // .jsp가 생략(properties에서 정의)
     }
-	
-	
+		
 	
 	@RequestMapping(value = "/member/login.dox", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -168,6 +190,9 @@ public class MemberController {
 		
 		return new Gson().toJson(resultMap);
 	}
+	
+		
+	
 	
 	
 // file첨부관련 controller

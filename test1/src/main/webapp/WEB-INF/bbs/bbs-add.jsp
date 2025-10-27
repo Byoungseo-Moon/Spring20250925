@@ -48,7 +48,11 @@
 
                     <tr>
                         <th>내용</th>                       
-                        <td ><div id="editor"></div></td>
+                        <td >
+                            <div id="editor"></div>
+                            <!-- <textarea v-model="contents" cols="25"  rows="5" ></textarea> -->
+                        </td>
+
                     </tr>
                 </table>
                 <div>
@@ -87,18 +91,21 @@
                         type: "POST",
                         data: param,
                         success: function (data) {
-                            alert("등록되었습니다.");
-                            console.log(data.bbsNum);
+                            if(data.result == "success"){
+                                alert("등록되었습니다.");
+                                location.href = "/bbs/list.do"; 
+                            
 
-                            //파일첨부
-                            var form = new FormData();
-                            form.append("file1", $("#file1")[0].files[0]);
-                            form.append("bbsNum", data.bbsNum);
-                            self.upload(form);
-
-                            location.href = "/bbs/list.do"; // 저장은 되는데 왜 않넘어갈까????
-
-                        }
+                            // //파일첨부
+                            // var form = new FormData();
+                            // form.append("file1", $("#file1")[0].files[0]);
+                            // form.append("bbsNum", data.bbsNum);
+                            // self.upload(form);
+                            
+                            } else{
+                                 alert("오류가 발생하였습니다.");                            
+                            }
+                        }    
                     });
                 },
 

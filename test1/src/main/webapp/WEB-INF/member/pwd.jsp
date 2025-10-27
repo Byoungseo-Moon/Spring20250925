@@ -134,7 +134,7 @@
                         success: function (data) {
                             if (data.result == "success") {
                                 alert(data.msg);
-                                //location.href="/member/login.do";
+                                location.href="/member/login.do";
                             } else {
                                 alert(data.msg);
                             }

@@ -106,20 +106,20 @@
                     });
                 },
 
-                fnPayment() {
+                fnPayment: function() {
                     let self = this;
                     IMP.request_pay({
                         pg: "html5_inicis",   // 사용하려는 채널의 pg값....
                         pay_method: "card",
                         merchant_uid: "merchant_" + new Date().getTime(),
                         name: self.info.foodName,
-                        amount: 1, // self
+                        amount: 1, // 가격 self.info.price * self.num
                         buyer_tel: "010-0000-0000",
                     }, function (rsp) { // callback
                         if (rsp.success) {
                             // 결제 성공 시                            
                             console.log(rsp);
-                            self.fnPayHistory(res.imp_uid, rsp.amount);
+                            self.fnPayHistory(res.imp_uid, rsp.paid.amount);
                         } else {
                             // 결제 실패 시
                             alert("실패");
